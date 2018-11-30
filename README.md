@@ -80,3 +80,8 @@ npm config set https-proxy http://127.0.0.1:1080
 npm config delete proxy
 npm config delete https-proxy
 ```
+
+## 工程运行后，界面如下
+
+![工程运行后的界面](demo.bmp)
+
