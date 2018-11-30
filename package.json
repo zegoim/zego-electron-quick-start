@@ -1,0 +1,31 @@
+{
+  "name": "zego-electron-quick-start",
+  "version": "1.0.0",
+  "description": "A zego electron sdk quick start application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pkg": "node pkg.js"
+  },
+  "keywords": [
+    "zego",
+    "electron",
+    "video",
+    "audio",
+    "live"
+  ],
+  "author": "zego",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^2.0.0",
+    "electron-builder": "^20.28.4"
+  },
+  "dependencies": {
+    "zegoliveroom": "^0.0.9"
+  },
+  "build": {
+    "extraResources": [
+      "./node_modules/zegoliveroom/**"
+    ]
+  }
+}
