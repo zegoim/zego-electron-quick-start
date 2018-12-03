@@ -80,21 +80,21 @@ $ npm run pkg
 ```
 $ npm install zegoliveroom
 ```
-2. 在工程项目中的renderer.js文件中添加以下代码，引入zego sdk，[参考代码 | _blank](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L5)
+2. 在工程项目中的renderer.js文件中添加以下代码，引入zego sdk，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L5)
 ```
 var ZegoLiveRoom = require("zegoliveroom/ZegoLiveRoom.js");
 var ZEGOCONSTANTS = require("zegoliveroom/ZegoConstant.js");
 ```
-3. 创建zego client，[参考代码 | _blank](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L14)
+3. 创建zego client，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L14)
 ```
 var zegoClient = new ZegoLiveRoom();
 ```
-4. 配置当前环境，[参考代码 | _blank](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L63)
+4. 配置当前环境，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L63)
 ```
   // 配置设置当前环境为测试环境
   zegoClient.setUseEnv({ use_test_env: true });
 ```
-5. 初始化sdk，[参考代码 | _blank](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L66)
+5. 初始化sdk，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L66)
 ```
   // 初始化sdk
   let ret = zegoClient.initSDK({
@@ -117,7 +117,7 @@ var zegoClient = new ZegoLiveRoom();
     zegoClient.unInitSDK();
   }
 ```
-6. 登录房间，[参考代码 | _blank](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L91)
+6. 登录房间，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L91)
 ```
   // 登陆房间
   let ret = zegoClient.loginRoom({
@@ -134,7 +134,7 @@ var zegoClient = new ZegoLiveRoom();
   });
 ```
 
-7. 预览摄像头，[参考代码 | _blank](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L121)
+7. 预览摄像头，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L121)
 ```
   // 设置预览view
   let set_ret = zegoClient.setPreviewView({
@@ -152,7 +152,7 @@ var zegoClient = new ZegoLiveRoom();
   }
 ```
 
-8. 开启回音消除、噪音消除和增益，[参考代码 | _blank](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L132)
+8. 开启回音消除、噪音消除和增益，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L132)
 
 ```
     // 开启回音消除
@@ -165,7 +165,7 @@ var zegoClient = new ZegoLiveRoom();
 
 <div STYLE="page-break-after: always;"></div>
 
-9. 开始推流，发送音视频数据，[参考代码 | _blank](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L144)
+9. 开始推流，发送音视频数据，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L144)
 ```
   // 开始推流
   let ret = zegoClient.startPublishing({
@@ -177,7 +177,7 @@ var zegoClient = new ZegoLiveRoom();
   });
 ```
 
-10. 开始拉流，播放音视频数据，[参考代码 | _blank](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L156)
+10. 开始拉流，播放音视频数据，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L156)
 ```
  // 开始拉流播放
   zegoClient.startPlayingStream({
@@ -187,7 +187,7 @@ var zegoClient = new ZegoLiveRoom();
   });
 ```
 
-11. 开始录制，[参考代码 | _blank](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L169)
+11. 开始录制，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L169)
 ```
   // 录制分辨率设定
   let width = 1920;  // 宽
@@ -227,39 +227,40 @@ var zegoClient = new ZegoLiveRoom();
     });
 ```
 
-12. 停止录制，[参考代码 | _blank](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L210)
+12. 停止录制，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L210)
 ```
   // 停止录制 
   zegoClient.stopRecord()
 ```
 
-13. 停止拉流，[参考代码 | _blank](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L164)
+13. 停止拉流，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L164)
 ```
   zegoClient.stopPlayingStream({ 
     stream_id: TEST_PLAY_STREAM_ID  // 流id
   });
 ```
 
-14. 停止推流，[参考代码 | _blank](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L214)
+14. 停止推流，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L214)
 ```
   zegoClient.stopPublishing({
        // 通道
        channel_index: ZEGOCONSTANTS.PublishChannelIndex.PUBLISH_CHN_MAIN 
   });
 ```
-15. 退出房间，[参考代码 | _blank](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L219)
+15. 退出房间，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L219)
 ```
   zegoClient.logoutRoom(rs => { });
 ```
 
-16. 反初始化sdk，[参考代码 | _blank](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L224)
+16. 反初始化sdk，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L224)
 ```
   zegoClient.unInitSDK();
 ```
+17. 生产环境中，不打开调试栏，关闭方法为，注释掉main.js的第18行代码[mainWindow.webContents.openDevTools()](https://github.com/zegoim/zego-electron-quick-start//blob/master/main.js#L18)
 
 <div STYLE="page-break-after: always;"></div>
 
-17. 更多的功能接口和触发通知事件，请查阅工程demo示例和api接口文档。
+18. 更多的功能接口和触发通知事件，请查阅工程demo示例和api接口文档。
 
 
 ## 工程运行后，界面如下
