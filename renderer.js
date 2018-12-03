@@ -17,10 +17,13 @@ var zegoClient = new ZegoLiveRoom();
 const getVersionButton = document.getElementById("getVersion");
 const initButton = document.getElementById("init");
 const loginButton = document.getElementById("login");
+const selectVideoDeviceButton = document.getElementById("selectVideoDevice");
 const previewButton = document.getElementById("preview");
 const publishStreamButton = document.getElementById("publishStream");
 const playStreamButton = document.getElementById("playStream");
 const stopPlayButton = document.getElementById("stopPlay");
+const startRecordButton = document.getElementById("startRecord");
+const stopRecordButton = document.getElementById("stopRecord");
 const stopPublishButton = document.getElementById("stopPublish");
 const logoutRoomButton = document.getElementById("logoutRoom");
 const uninitSdkButton = document.getElementById("uninitSdk");
@@ -56,10 +59,10 @@ getVersionButton.onclick = () => {
 
 // 初始化sdk
 initButton.onclick = () => {
-
+  
   // 配置设置当前环境为测试环境
   zegoClient.setUseEnv({ use_test_env: true });
-
+  
   // 初始化sdk
   let ret = zegoClient.initSDK({
     app_id: app_id,
@@ -100,6 +103,19 @@ loginButton.onclick = () => {
   });
 }
 
+// 选择摄像头设备
+selectVideoDeviceButton.onclick = () => {
+  // 获取摄像头设备列表
+  let video_devices_list = zegoClient.getVideoDeviceList();
+  console.log("got video devices list:", video_devices_list);
+  if(video_devices_list.length > 0){
+    let cur_sel_index = 0; // 设备索引，选择第一个设备
+    zegoClient.setVideoDevice({
+      device_id: video_devices_list[cur_sel_index].device_id 
+    });
+  }
+}
+
 // 预览本地摄像头
 previewButton.onclick = () => {
   // 预览视频
@@ -112,6 +128,16 @@ previewButton.onclick = () => {
       channel_index: ZEGOCONSTANTS.PublishChannelIndex.PUBLISH_CHN_MAIN
     });
     console.log("预览结果", preview_ret);
+    
+    // 开启回音消除
+    zegoClient.enableAEC({enable:true});
+    
+    // 开启噪音消除
+    zegoClient.enableANS({enable:true});
+    
+    // 开启增益
+    zegoClient.enableAGC({enable:true});    
+    
   }
 }
 
@@ -138,6 +164,51 @@ playStreamButton.onclick = () => {
 // 停止拉流
 stopPlayButton.onclick = () => {
   zegoClient.stopPlayingStream({ stream_id: TEST_PLAY_STREAM_ID });
+}
+
+// 开始录制
+startRecordButton.onclick = () =>{
+    
+  let width = 1920;
+  let height = 1080;
+  
+  // 设置录制输出分辨率
+  zegoClient.setRecordOutput({
+      width:width,
+      height:height
+  });
+  
+  // 添加录制本地视频
+  zegoClient.addRecordSource({
+      source_type:ZEGOCONSTANTS.RecordSourceType.LocalVideo,
+            pos_x:0,       // 本地视频起始位置x
+            pos_y:0,       // 本地视频起始位置y
+            width:width/2, // 本地视频宽
+           height:height});// 本地视频高
+
+  // 添加录制对端视频
+  zegoClient.addRecordSource({
+              source_type:ZEGOCONSTANTS.RecordSourceType.RemoteVideo,
+                    pos_x:width/2,  // 对端视频起始位置x
+                    pos_y:0,        // 对端视频起始位置y
+                    width:width/2,  // 对端视频宽
+                   height:height}); // 对端视频高
+  
+  // 开始录制
+  zegoClient.startRecord({
+    savefile:"d:/record.mp4" // 录制文件路径
+    }, rs=>{
+        if(rs.error_code == 0){
+            console.log("正在录制..");
+        }else{
+            console.log("录制发生错误，错误码为:" + rs.error_code);
+        }
+    });
+}
+
+stopRecordButton.onclick = () =>{
+  // 停止录制 
+  zegoClient.stopRecord()    
 }
 
 // 停止推流
@@ -263,4 +334,11 @@ zegoClient.onEventHandler("onReconnect", rs => { console.log("正在重连通知
 zegoClient.onEventHandler("onTempBroken", rs => { console.log("临时中断通知，onTempBroken, rs = ", rs); });
 // 引擎结束停止通知
 zegoClient.onEventHandler("onAVEngineStop", () => { console.log("引擎结束停止通知，onAVEngineStop"); });
+// 录制状态回调
+zegoClient.onEventHandler("onRecordStatusUpdate", rs => {
+  console.log("录制状态回调，onRecordStatusUpdate, rs = ", rs);
+});
+
+
+
 
