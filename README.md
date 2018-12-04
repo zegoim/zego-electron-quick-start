@@ -5,7 +5,7 @@
 
 ## 执行以下命令，下载工程源码
 ```
-git clone https://github.com/zegoim/zego-electron-quick-start.git
+$ git clone https://github.com/zegoim/zego-electron-quick-start.git
 ```
 
 ## 进入`zego-electron-quick-start`目录
@@ -13,29 +13,29 @@ git clone https://github.com/zegoim/zego-electron-quick-start.git
 $ cd zego-electron-quick-start
 ```
 
-## 配置npm淘宝镜像，安装依赖
+## 先配置淘宝镜像，并安装依赖，命令如下
 ```
 $ npm config set registry http://registry.npm.taobao.org/
 $ npm install
 ```
-## 由于网络原因，可能导致npm install安装依赖时失败，需要来回切换npm的淘宝镜像和国外镜像
+## 如果使用淘宝镜像，npm install安装依赖时失败了，请切换到国外镜像，并设置通过代理访问，设置方法如下
 
-+ 执行以下命令，设置npm淘宝镜像
++ 设置国外镜像，并通过代理访问国外镜像的方法是，执行以下命令
 ```
-npm config set registry http://registry.npm.taobao.org/
-// 删除http代理
-npm config delete proxy
-// 删除https代理
-npm config delete https-proxy
+$ npm config set registry https://registry.npmjs.org/
+  // 设置代理
+$ npm config set proxy http://127.0.0.1:1080
+  // 设置https代理
+$ npm config set https-proxy http://127.0.0.1:1080
 ```
-
-+ 执行以下命令，设置国外镜像，并通过代理访问国外镜像
+## 如果使用国外镜像，npm install安装依赖时失败了，请切换到国内淘宝镜像，设置方法如下
++ 设置npm淘宝镜像的方法是，执行以下命令
 ```
-npm config set registry https://registry.npmjs.org/
-// 设置代理
-npm config set proxy http://127.0.0.1:1080
-// 设置https代理
-npm config set https-proxy http://127.0.0.1:1080
+$ npm config set registry http://registry.npm.taobao.org/
+  // 删除http代理
+$ npm config delete proxy
+  // 删除https代理
+$ npm config delete https-proxy
 ```
 
 <div STYLE="page-break-after: always;"></div>
@@ -172,7 +172,7 @@ var zegoClient = new ZegoLiveRoom();
     zegoClient.enableAEC({enable:true});
     // 开启噪音消除
     zegoClient.enableANS({enable:true});
-    // 开启增益
+    // 开启自动增益控制
     zegoClient.enableAGC({enable:true});
 ```
 10. 开始推流，发送音视频数据，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L144)
