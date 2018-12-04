@@ -134,7 +134,20 @@ var zegoClient = new ZegoLiveRoom();
   });
 ```
 
-7. 预览摄像头，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L121)
+7. 选择设备，[参考代码](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L105)
+```
+  // 获取摄像头设备列表
+  let video_devices_list = zegoClient.getVideoDeviceList();
+  console.log("got video devices list:", video_devices_list);
+  if(video_devices_list.length > 0){
+    let cur_sel_index = 0; // 设备索引，选择第一个设备
+    zegoClient.setVideoDevice({
+      device_id: video_devices_list[cur_sel_index].device_id 
+    });
+  }
+```
+
+8. 预览摄像头，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L121)
 ```
   // 设置预览view
   let set_ret = zegoClient.setPreviewView({
@@ -152,7 +165,7 @@ var zegoClient = new ZegoLiveRoom();
   }
 ```
 
-8. 开启回音消除、噪音消除和增益，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L132)
+9. 开启回音消除、噪音消除和增益，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L132)
 
 ```
     // 开启回音消除
@@ -162,10 +175,7 @@ var zegoClient = new ZegoLiveRoom();
     // 开启增益
     zegoClient.enableAGC({enable:true});
 ```
-
-<div STYLE="page-break-after: always;"></div>
-
-9. 开始推流，发送音视频数据，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L144)
+10. 开始推流，发送音视频数据，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L144)
 ```
   // 开始推流
   let ret = zegoClient.startPublishing({
@@ -177,7 +187,7 @@ var zegoClient = new ZegoLiveRoom();
   });
 ```
 
-10. 开始拉流，播放音视频数据，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L156)
+11. 开始拉流，播放音视频数据，开发过程中，需要传递的流id参数是对方的流id，这里为了演示，拉取的是自己的流id。[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L156)
 ```
  // 开始拉流播放
   zegoClient.startPlayingStream({
@@ -186,8 +196,9 @@ var zegoClient = new ZegoLiveRoom();
    params: ""                                           // 拉流参数
   });
 ```
+<div STYLE="page-break-after: always;"></div>
 
-11. 开始录制，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L169)
+12. 开始录制，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L169)
 ```
   // 录制分辨率设定
   let width = 1920;  // 宽
@@ -227,41 +238,46 @@ var zegoClient = new ZegoLiveRoom();
     });
 ```
 
-12. 停止录制，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L210)
+13. 停止录制，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L210)
 ```
   // 停止录制 
   zegoClient.stopRecord()
 ```
+<div STYLE="page-break-after: always;"></div>
 
-13. 停止拉流，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L164)
+14. 停止拉流播放音视频数据，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L164)
 ```
   zegoClient.stopPlayingStream({ 
     stream_id: TEST_PLAY_STREAM_ID  // 流id
   });
 ```
 
-14. 停止推流，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L214)
+15. 停止推流发送音视频数据，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L214)
 ```
   zegoClient.stopPublishing({
        // 通道
        channel_index: ZEGOCONSTANTS.PublishChannelIndex.PUBLISH_CHN_MAIN 
   });
 ```
-15. 退出房间，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L219)
+16. 退出房间，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L219)
 ```
   zegoClient.logoutRoom(rs => { });
 ```
-
-16. 反初始化sdk，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L224)
+17. 反初始化sdk，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L224)
 ```
   zegoClient.unInitSDK();
 ```
-17. 生产环境中，不打开调试栏，关闭方法为，注释掉main.js的第18行代码[mainWindow.webContents.openDevTools()](https://github.com/zegoim/zego-electron-quick-start//blob/master/main.js#L18)
+18. 生产环境中，不打开调试栏，关闭方法为，注释掉main.js的第18行代码，[mainWindow.webContents.openDevTools()](https://github.com/zegoim/zego-electron-quick-start//blob/master/main.js#L18)
 
+19. 更多的功能接口和触发通知事件，请查阅工程demo示例和api接口文档。
+
+20. **注意点说明**
+-  推流和拉流：Zego SDK 把采集我方的音视频，编码后发送到 Zego 实时网络，此步骤被称为“推流”。同时，Zego SDK 从 Zego 实时网络中接收对方的音视频数据流，解码得到对方的声音与画面，此步骤被称作“拉流”。通话双方各自推我方流和拉对方流，视频通话就建立起来了。
+- 用户id设置：业务保证唯一即可。
+- 推流时机：登陆房间成功后，在进行推流操作。
+- 拉流时机：在实现过程中，拉取的是对方的流，所以拉流操作传递的流id参数是对方的流id。在onStreamUpdated事件的流新增事件时可以获取到对方的流id。当收到新增流事件时在进行拉流操作。
+- 房间登录相关说明，查看官网[房间登录](https://www.zego.im/html/document/#Application_Scenes/FAQ/Login)。
 <div STYLE="page-break-after: always;"></div>
-
-18. 更多的功能接口和触发通知事件，请查阅工程demo示例和api接口文档。
-
 
 ## 工程运行后，界面如下
 
