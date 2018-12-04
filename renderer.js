@@ -328,8 +328,8 @@ zegoClient.onEventHandler("onDeviceError", rs => { console.log("设备状态错�
 zegoClient.onEventHandler("onKickOut", rs => {console.log("被挤掉线通知，onKickOut, rs = ", rs);});
 // 已从房间断开连接
 zegoClient.onEventHandler("onDisconnect", rs => { console.log("已从房间断开连接,onDisconnect, rs = ", rs);});
-// 正在重连通知
-zegoClient.onEventHandler("onReconnect", rs => { console.log("正在重连通知，onReconnect, rs = ", rs); });
+// 与 server 重连成功通知
+zegoClient.onEventHandler("onReconnect", rs => { console.log("与 server 重连成功通知，onReconnect, rs = ", rs); });
 // 临时中断通知
 zegoClient.onEventHandler("onTempBroken", rs => { console.log("临时中断通知，onTempBroken, rs = ", rs); });
 // 引擎结束停止通知
