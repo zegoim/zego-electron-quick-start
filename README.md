@@ -276,6 +276,7 @@ var zegoClient = new ZegoLiveRoom();
 - 用户id设置：业务保证唯一即可。
 - 推流时机：登陆房间成功后，在进行推流操作。
 - 拉流时机：在实现过程中，拉取的是对方的流，所以拉流操作传递的流id参数是对方的流id。在onStreamUpdated事件的流新增事件时可以获取到对方的流id。当收到新增流事件时在进行拉流操作。
+- 录制和停止录制目前只在windows上支持。
 - 房间登录相关说明，查看官网[房间登录](https://www.zego.im/html/document/#Application_Scenes/FAQ/Login)。
 <div STYLE="page-break-after: always;"></div>
 
