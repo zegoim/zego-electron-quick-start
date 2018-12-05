@@ -339,6 +339,14 @@ zegoClient.onEventHandler("onRecordStatusUpdate", rs => {
   console.log("录制状态回调，onRecordStatusUpdate, rs = ", rs);
 });
 
+const { remote } = require('electron')
+const goButton = document.getElementById("go");
+
+goButton.onclick = () =>{
+    
+    remote.getCurrentWebContents().loadURL(document.getElementById("urlContent").value)
+}
+
 
 
 

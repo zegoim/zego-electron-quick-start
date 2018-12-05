@@ -3,22 +3,27 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Hello World!</title>
+  <title>zego-electron-quick-start</title>
 </head>
 
 <body>
 
-  <h1>Hello World!</h1>
-  <!-- All of the Node.js APIs are available in this renderer process. -->
+  <h1>Hello zego-electron-quick-start</h1>
   We are using Node.js
   <script>document.write(process.versions.node)</script>,
   Chromium
   <script>document.write(process.versions.chrome)</script>,
   and Electron
   <script>document.write(process.versions.electron)</script>.
+  <br/>
+  <br/>
+  <div>
 
-  <h2>Zego Electron SDK Quick Start Page</h2>
+      <input type="text" style="width:70%" placeholder="input your url，like: https://www.baidu.com" id="urlContent"/>
+      <button id="go">GO</button>
 
+  </div>
+  <br/>
   <div>
     <button id="getVersion">读取版本号</button>
     版本号：<span id="sdkversiontext"></span>
