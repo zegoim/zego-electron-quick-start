@@ -21,7 +21,7 @@
     "electron-builder": "^20.28.4"
   },
   "dependencies": {
-    "zegoliveroom": "0.0.13"
+    "zegoliveroom": "0.0.14"
   },
   "build": {
     "extraResources": [

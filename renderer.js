@@ -7,7 +7,7 @@ var ZegoLiveRoom = require("zegoliveroom/ZegoLiveRoom.js");
 var ZEGOCONSTANTS = require("zegoliveroom/ZegoConstant.js");
 
 // app id
-const app_id = ;//向zego获取app id，ID为整形或者字符串均可
+const app_id = "";//向zego获取app id，ID为字符串
 // app key
 const sign_key = [];//向zego获取测试sign key，是一个数组，格式例如 [0x01, 0x03, 0x44, ....]
 
@@ -27,6 +27,7 @@ const stopRecordButton = document.getElementById("stopRecord");
 const stopPublishButton = document.getElementById("stopPublish");
 const logoutRoomButton = document.getElementById("logoutRoom");
 const uninitSdkButton = document.getElementById("uninitSdk");
+const sendMediaSideInfoButton = document.getElementById("sendMediaSideInfo");
 
 // gen randow word
 function randomWord(len) {
@@ -226,6 +227,12 @@ uninitSdkButton.onclick = () => {
   zegoClient.unInitSDK();
 }
 
+sendMediaSideInfoButton.onclick = () => {
+    zegoClient.activateMediaSideInfo({});
+    zegoClient.sendMediaSideInfo({side_info:"test side info message"});
+    
+}
+
 
 // SDK 引擎事件通知
 zegoClient.onEventHandler("onAVKitEvent", rs => {
@@ -338,6 +345,8 @@ zegoClient.onEventHandler("onAVEngineStop", () => { console.log("引擎结束停
 zegoClient.onEventHandler("onRecordStatusUpdate", rs => {
   console.log("录制状态回调，onRecordStatusUpdate, rs = ", rs);
 });
+// 收到媒体次要信息回调
+zegoClient.onEventHandler("onRecvMediaSideInfo", rs => {console.log("收到媒体次要信息", rs);})
 
 const { remote } = require('electron')
 const goButton = document.getElementById("go");

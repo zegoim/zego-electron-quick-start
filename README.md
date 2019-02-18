@@ -282,5 +282,5 @@ var zegoClient = new ZegoLiveRoom();
 
 ## 工程运行后，界面如下
 
-![工程运行后的界面](demo.bmp)
+![工程运行后的界面](demo.png)
 
