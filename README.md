@@ -269,7 +269,7 @@ var zegoClient = new ZegoLiveRoom();
 ```
 18. 生产环境中，不打开调试栏，关闭方法为，注释掉main.js的第18行代码，[mainWindow.webContents.openDevTools()](https://github.com/zegoim/zego-electron-quick-start//blob/master/main.js#L18)
 
-19. 更多的功能接口和触发通知事件，请查阅工程demo示例和 [官网SDK](https://www.zego.im/html/document/#Live_Room/API_Instructions:electron) 的[ Electron API接口](https://www.zego.im/static/docs/API/ZegoLiveRoom/Electron/html/index.html)文档。
+19. 更多的功能接口和触发通知事件，请查阅工程demo示例和 [官网SDK](https://doc.zego.im/CN/307.html) 的[ Electron API接口](https://doc.zego.im/API/ZegoLiveRoom/Electron/html/index.html)文档。
 
 20. **注意点说明**
 -  推流和拉流：Zego SDK 把采集我方的音视频，编码后发送到 Zego 实时网络，此步骤被称为“推流”。同时，Zego SDK 从 Zego 实时网络中接收对方的音视频数据流，解码得到对方的声音与画面，此步骤被称作“拉流”。通话双方各自推我方流和拉对方流，视频通话就建立起来了。
