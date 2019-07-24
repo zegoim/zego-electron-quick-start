@@ -167,51 +167,6 @@ stopPlayButton.onclick = () => {
   zegoClient.stopPlayingStream({ stream_id: TEST_PLAY_STREAM_ID });
 }
 
-// 开始录制
-startRecordButton.onclick = () =>{
-    
-  let width = 1920;
-  let height = 1080;
-  
-  // 设置录制输出分辨率
-  zegoClient.setRecordOutput({
-      width:width,
-      height:height
-  });
-  
-  // 添加录制本地视频
-  zegoClient.addRecordSource({
-      source_type:ZEGOCONSTANTS.RecordSourceType.LocalVideo,
-            pos_x:0,       // 本地视频起始位置x
-            pos_y:0,       // 本地视频起始位置y
-            width:width/2, // 本地视频宽
-           height:height});// 本地视频高
-
-  // 添加录制对端视频
-  zegoClient.addRecordSource({
-              source_type:ZEGOCONSTANTS.RecordSourceType.RemoteVideo,
-                    pos_x:width/2,  // 对端视频起始位置x
-                    pos_y:0,        // 对端视频起始位置y
-                    width:width/2,  // 对端视频宽
-                   height:height}); // 对端视频高
-  
-  // 开始录制
-  zegoClient.startRecord({
-    savefile:"d:/record.mp4" // 录制文件路径
-    }, rs=>{
-        if(rs.error_code == 0){
-            console.log("正在录制..");
-        }else{
-            console.log("录制发生错误，错误码为:" + rs.error_code);
-        }
-    });
-}
-
-stopRecordButton.onclick = () =>{
-  // 停止录制 
-  zegoClient.stopRecord()    
-}
-
 // 停止推流
 stopPublishButton.onclick = () => {
   zegoClient.stopPublishing({ channel_index: ZEGOCONSTANTS.PublishChannelIndex.PUBLISH_CHN_MAIN });
