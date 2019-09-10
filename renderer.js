@@ -6,6 +6,9 @@
 var ZegoLiveRoom = require("zegoliveroom/ZegoLiveRoom.js");
 var ZEGOCONSTANTS = require("zegoliveroom/ZegoConstant.js");
 
+// 引入外部滤镜
+var ZegoVideoFilterDemo = require('./ZegoVideoFilterDemo/ZegoVideoFilterDemo')
+
 // app id
 const app_id = "";//向zego获取app id，ID为字符串
 // app key
@@ -63,6 +66,12 @@ initButton.onclick = () => {
   
   // 配置设置当前环境为测试环境
   zegoClient.setUseEnv({ use_test_env: true });
+
+  let factory = ZegoVideoFilterDemo.getVideoFilterFactory()
+  zegoClient.setVideoFilterFactory({factory})
+  ZegoVideoFilterDemo.enableBeauty(true);
+
+
   
   // 初始化sdk
   let ret = zegoClient.initSDK({
