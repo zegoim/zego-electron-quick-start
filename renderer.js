@@ -7,7 +7,7 @@ var ZegoLiveRoom = require("zegoliveroom/ZegoLiveRoom.js");
 var ZEGOCONSTANTS = require("zegoliveroom/ZegoConstant.js");
 
 // 引入外部滤镜
-var ZegoVideoFilterDemo = require('./ZegoVideoFilterDemo/ZegoVideoFilterDemo')
+var ZegoVideoFilterDemo = require("zegoliveroom/ZegoVideoFilterDemo.node");
 
 // app id
 const app_id = "";//向zego获取app id，ID为字符串
