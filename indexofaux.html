@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Aux Window</title>
+</head>
+
+<body>
+
+  <h1>Aux Window</h1>
+  We are using Node.js
+  <script>document.write(process.versions.node)</script>,
+  Chromium
+  <script>document.write(process.versions.chrome)</script>,
+  and Electron
+  <script>document.write(process.versions.electron)</script>.
+
+  <br/>
+  <br/>
+  <div>
+
+
+  </div>
+  <br/>
+  <div>
+    <button id="getVersion">读取版本号</button>
+    版本号：<span id="sdkversiontext"></span>
+  </div>
+
+  <div>
+    <button id="init">初始化sdk</button>
+  </div>
+
+  <div>
+    <button id="login">登录房间</button>
+  </div>
+
+  <div>
+    <button id="selectVideoDevice">选择设备</button>
+  </div>  
+
+  <div>
+    <button id="preview">开始预览</button>
+    <canvas id="localVideo" width="360px" height="240px"></canvas>
+  </div>
+
+  <div>
+    <button id="publishStream">开始推流</button>
+  </div>
+
+  <div>
+    <button id="playStream">开始拉流</button>
+    <canvas id="remoteVideo" width="360px" height="240px"></canvas>
+  </div>
+  
+  <div>
+    <button id="stopPlay">停止拉流</button>
+  </div>
+
+  <div>
+    <button id="stopPublish">停止推流</button>
+  </div>
+  
+  <div>
+    <button id="sendMediaSideInfo">发送媒体次要信息</button>
+  </div>
+
+  <div>
+    <button id="logoutRoom">退出房间</button>
+  </div>
+
+  <div>
+    <button id="uninitSdk">反初始化sdk</button>
+  </div>
+
+  <script>
+    // You can also require other files to run in this process
+    require('./rendererofaux.js')
+  </script>
+
+<style>
+div{
+  margin-bottom: 0.5em;
+}
+</style>
+
+
+</body>
+
+</html>

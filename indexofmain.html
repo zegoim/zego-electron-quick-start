@@ -3,26 +3,26 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>zego-electron-quick-start</title>
+  <title>Main Window</title>
 </head>
 
 <body>
 
-  <h1>Hello zego-electron-quick-start</h1>
+  <h1>Main Window</h1>
   We are using Node.js
   <script>document.write(process.versions.node)</script>,
   Chromium
   <script>document.write(process.versions.chrome)</script>,
   and Electron
   <script>document.write(process.versions.electron)</script>.
+
+  <br/>
+  Aux windows Id 
+  <script>
+    document.write(require('electron').remote.getGlobal('auxWindowId'))
+  </script>
   <br/>
   <br/>
-  <div>
-
-      <input type="text" style="width:70%" placeholder="input your url，like: https://www.baidu.com" id="urlContent"/>
-      <button id="go">GO</button>
-
-  </div>
   <br/>
   <div>
     <button id="getVersion">读取版本号</button>
@@ -77,7 +77,7 @@
 
   <script>
     // You can also require other files to run in this process
-    require('./renderer.js')
+    require('./rendererofmain.js')
   </script>
 
 <style>

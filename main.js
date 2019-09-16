@@ -6,18 +6,34 @@ const url = require('url')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
+let auxWindow
 
 function createWindow () {
-  // Create the browser window.
+  // Create the main browser window.
   mainWindow = new BrowserWindow({width: 800, height: 600,webPreferences: {
     nodeIntegration: true
   }})
 
-  // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
+  // Create the aux browser window.
+  auxWindow = new BrowserWindow({x:0, y:0, width: 800, height: 600,webPreferences: {
+    nodeIntegration: true
+  }})
 
+  // define global data so mainwindow can get the id of the auxwindow,
+  // ipcRenderer.sendTo(webContentsId, channel, [, arg1][, arg2][, ...])
+  global["auxWindowId"] = auxWindow.id
+
+
+  // and load the index.html of the app.
+  mainWindow.loadFile('indexofmain.html')
+  // and load the index.html of the app.
+  auxWindow.loadFile('indexofaux.html')
+  
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
+  // Open the DevTools.
+  auxWindow.webContents.openDevTools()
+
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -26,6 +42,15 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+  // Emitted when the window is closed.
+  auxWindow.on('closed', function () {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    auxWindow = null
+  })
+
+
 }
 
 // This method will be called when Electron has finished

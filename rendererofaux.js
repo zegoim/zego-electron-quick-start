@@ -304,13 +304,6 @@ zegoClient.onEventHandler("onRecordStatusUpdate", rs => {
 zegoClient.onEventHandler("onRecvMediaSideInfo", rs => {console.log("收到媒体次要信息", rs);})
 
 const { remote } = require('electron')
-const goButton = document.getElementById("go");
-
-goButton.onclick = () =>{
-    
-    remote.getCurrentWebContents().loadURL(document.getElementById("urlContent").value)
-}
-
 
 
 
