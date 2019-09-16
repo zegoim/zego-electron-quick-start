@@ -303,7 +303,17 @@ zegoClient.onEventHandler("onRecordStatusUpdate", rs => {
 // 收到媒体次要信息回调
 zegoClient.onEventHandler("onRecvMediaSideInfo", rs => {console.log("收到媒体次要信息", rs);})
 
-const { remote } = require('electron')
 
+const { remote, ipcRenderer } = require('electron')
 
+// 收到视频数据回调
+zegoClient.onEventHandler("onVideoData", rs =>{
+  
+  try {
+    let auxWindowId = remote.getGlobal('auxWindowId')
+    ipcRenderer.sendTo(auxWindowId, 'videodata', rs)    
+  } catch (error) {
+    console.log("send to aux windows error: ", error)
+  }
 
+})
