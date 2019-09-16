@@ -310,8 +310,11 @@ const { remote, ipcRenderer } = require('electron')
 zegoClient.onEventHandler("onVideoData", rs =>{
   
   try {
-    let auxWindowId = remote.getGlobal('auxWindowId')
-    ipcRenderer.sendTo(auxWindowId, 'videodata', rs)    
+    // 只同步本地预览的主流
+    if(rs.is_local_stream && rs.local_stream_channel == ZEGOCONSTANTS.PublishChannelIndex.PUBLISH_CHN_MAIN){
+      let auxWindowId = remote.getGlobal('auxWindowId')
+      ipcRenderer.sendTo(auxWindowId, 'videodata', rs)    
+    }
   } catch (error) {
     console.log("send to aux windows error: ", error)
   }
