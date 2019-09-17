@@ -17,7 +17,7 @@
   "author": "zego",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^5.0.8",
+    "electron": "^2.0.0",
     "electron-builder": "^20.28.4"
   },
   "dependencies": {

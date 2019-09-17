@@ -10,14 +10,11 @@ let auxWindow
 
 function createWindow () {
   // Create the main browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600,webPreferences: {
-    nodeIntegration: true
-  }})
+  mainWindow = new BrowserWindow({width: 800, height: 600})
+
 
   // Create the aux browser window.
-  auxWindow = new BrowserWindow({x:0, y:0, width: 800, height: 600,webPreferences: {
-    nodeIntegration: true
-  }})
+  auxWindow = new BrowserWindow({x:0, y:0, width: 800, height: 600})
 
   // define global data so mainwindow can get the id of the auxwindow,
   // ipcRenderer.sendTo(webContentsId, channel, [, arg1][, arg2][, ...])
