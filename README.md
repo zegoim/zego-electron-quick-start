@@ -233,6 +233,62 @@ var zegoClient = new ZegoLiveRoom();
 - 房间登录相关说明，查看官网[房间登录](https://www.zego.im/html/document/#Application_Scenes/FAQ/Login)。
 <div STYLE="page-break-after: always;"></div>
 
+## 如何下载指定版本Electron 的 ZEGO LiveRoomSDK
+
+在自己项目中的package.json文件，添加以下内容(其中4.0.8 表示对应的Electron版本号)。然后执行npm install
+
+```
+  "scripts": {
+    "postinstall": "node node_modules/zegodown/bin/zegodown  -v 4.0.8"
+  },
+  "dependencies": {
+    "zegoliveroom": "latest",
+    "zegodown": "latest"
+  }
+```
+
+如果指定下载32位,postinstall配置为
+node node_modules/zegodown/bin/zegodown  -v 4.0.8 -a ia32
+
+如果指定下载64位
+node node_modules/zegodown/bin/zegodown  -v 4.0.8 -a x64
+
+如果不指定，默认取值为node的os.platform()平台信息
+
+mac 下不支持32位，默认为64位。
+
+下载的Zego Electron Sdk 会自动解压放在node_modules/zegoliveroom目录下
+
+目前支持指定以下版本Electron
+
+['2.0.18', '3.0.16', '3.1.13', '4.0.8', '4.1.5', '4.2.11', '5.0.11']
+
+
+版本说明：
+
+由于Electron 的版本管理规则是从2.0开始符合semver规范：
+
+规范大概是这样的：
+
+版本号由3个数字组成：a.b.c
+
+前面两个数字表示大小版本号的更新，数字a和b发生变化是，都会导致abi的不兼容，但是c的变化只是bug修改，不涉及abi的兼容问题。
+
+例如：
+
+可以通过以下命令查询到目前所有的Electron版本号。
+
+```
+npm view electron versions
+```
+
+用以上命令可以看到Electron的2.0版本有：2.0.0到2.0.18，目前Electron的2.0版本最高版本是2.0.18。那么ZEGO 就会对2.0.18进行支持，
+
+所以使用ZEGO的2.0.18版本的sdk就能兼容Electron的2.0.0到2.0.18的任何一个版本。以此类推：
+
+以此类推，目前ZEGO能默认支持2.0 到 5.0 的所有Electron版本，用户根据相关的版本号进行配置下载即可。
+
+
 ## 工程运行后，界面如下
 
 ![工程运行后的界面](demo.png)
