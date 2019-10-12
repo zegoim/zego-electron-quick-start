@@ -7,10 +7,19 @@ var ZegoLiveRoom = require("zegoliveroom/ZegoLiveRoom.js");
 var ZEGOCONSTANTS = require("zegoliveroom/ZegoConstant.js");
 
 // app id
-const app_id = "";//向zego获取app id，ID为字符串
-// app key
-const sign_key = [];//向zego获取测试sign key，是一个数组，格式例如 [0x01, 0x03, 0x44, ....]
+const app_id = ;//向zego获取app id，ID为字符串,请在 [即构管理控制台](https://console.zego.im/acount) 申请 SDK 初始化需要的 AppID 和 AppSign, [获取 AppID 和 AppSign 指引](https://doc.zego.im/API/HideDoc/GetAppIDGuide/GetAppIDGuideline.html)
+// app sign
+const app_sign = [];//向zego获取测试app_sign，是一个数组，格式例如 [0x01, 0x03, 0x44, ....]
 
+console.log("")
+console.log("")
+console.log("")
+console.log("请在 [即构管理控制台](https://console.zego.im/acount) 申请 SDK 初始化需要的 AppID 和 AppSign");
+console.log("[获取 AppID 和 AppSign 指引](https://doc.zego.im/API/HideDoc/GetAppIDGuide/GetAppIDGuideline.html)。");
+console.log("申请到appid和sign后，修改renderer.js文件第10、12行代码为自己申请到的appid和app_sign。");
+console.log("")
+console.log("")
+console.log("")
 // 创建zego client
 var zegoClient = new ZegoLiveRoom();
 
@@ -67,7 +76,7 @@ initButton.onclick = () => {
   // 初始化sdk
   let ret = zegoClient.initSDK({
     app_id: app_id,
-    sign_key: sign_key,
+    sign_key: app_sign,
     user_id: TEST_USER_ID,
     user_name: TEST_USER_NAME
   }, rs => {

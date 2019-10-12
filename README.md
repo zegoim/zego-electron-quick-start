@@ -1,6 +1,6 @@
 # zego-electron-quick-start 
 
-1. 安装好node 32位环境。[https://nodejs.org/dist/v10.14.1/node-v10.14.1-x86.msi](https://nodejs.org/dist/v10.14.1/node-v10.14.1-x86.msi)
+1. 安装好node环境。[https://nodejs.org/dist/v10.14.1/node-v10.14.1-x86.msi](https://nodejs.org/dist/v10.14.1/node-v10.14.1-x86.msi)
 2. 按照以下命令执行。
 
 ## 执行以下命令，下载工程源码
@@ -16,7 +16,7 @@ $ cd zego-electron-quick-start
 ## 先配置淘宝镜像，并安装依赖，命令如下
 ```
 $ npm config set registry http://registry.npm.taobao.org/
-$ npm install
+$ npm install （或者使用 cnpm install 下载依赖速度会快很多）
 ```
 ## 如果使用淘宝镜像，npm install安装依赖时失败了，请切换到国外镜像，并设置通过代理访问，设置方法如下
 
@@ -40,14 +40,14 @@ $ npm config delete https-proxy
 
 <div STYLE="page-break-after: always;"></div>
 
-## 修改填写`renderer.js`的第10行的 app_id 和 sign_key。
+## 修改填写`renderer.js`的第10行的 app_id 和 app_sign
 ```
-// app id，
-// 在zego 控制台https://console.zego.im/acount 
-// 注册后，获取app id，ID为整形或者字符串均可
-const app_id = ; 
-// app key，是一个数组，格式例如 [0x01, 0x03, 0x44, ....]
-const sign_key = [];
+// 请在 [即构管理控制台](https://console.zego.im/acount) 申请 SDK 初始化需要的 AppID 和 AppSign
+// 获取 AppID 和 AppSign 指引](https://doc.zego.im/API/HideDoc/GetAppIDGuide/GetAppIDGuideline.html)。
+// app id
+const app_id = "";//向zego获取app id，ID为字符串
+// app sign
+const app_sign = [];//向zego获取测试app_sign，是一个数组，格式例如 [0x01, 0x03, 0x44, ....]
 ```
 
 ## 运行测试程序
@@ -99,7 +99,7 @@ var zegoClient = new ZegoLiveRoom();
   // 初始化sdk
   let ret = zegoClient.initSDK({
     app_id: app_id,           // appid
-    sign_key: sign_key,       // app key
+    sign_key: app_sign,       // app sign
     user_id: TEST_USER_ID,    // 用户id
     user_name: TEST_USER_NAME // 用户名字
   }, rs => {
