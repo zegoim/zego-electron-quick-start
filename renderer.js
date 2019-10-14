@@ -11,15 +11,6 @@ const app_id = ;//向zego获取app id，ID为字符串,请在 [即构管理控�
 // app sign
 const app_sign = [];//向zego获取测试app_sign，是一个数组，格式例如 [0x01, 0x03, 0x44, ....]
 
-console.log("")
-console.log("")
-console.log("")
-console.log("请在 [即构管理控制台](https://console.zego.im/acount) 申请 SDK 初始化需要的 AppID 和 AppSign");
-console.log("[获取 AppID 和 AppSign 指引](https://doc.zego.im/API/HideDoc/GetAppIDGuide/GetAppIDGuideline.html)。");
-console.log("申请到appid和sign后，修改renderer.js文件第10、12行代码为自己申请到的appid和app_sign。");
-console.log("")
-console.log("")
-console.log("")
 // 创建zego client
 var zegoClient = new ZegoLiveRoom();
 
@@ -28,6 +19,7 @@ const initButton = document.getElementById("init");
 const loginButton = document.getElementById("login");
 const selectVideoDeviceButton = document.getElementById("selectVideoDevice");
 const previewButton = document.getElementById("preview");
+const stopPreviewButton = document.getElementById("stopPreview");
 const publishStreamButton = document.getElementById("publishStream");
 const playStreamButton = document.getElementById("playStream");
 const stopPlayButton = document.getElementById("stopPlay");
@@ -37,6 +29,204 @@ const stopPublishButton = document.getElementById("stopPublish");
 const logoutRoomButton = document.getElementById("logoutRoom");
 const uninitSdkButton = document.getElementById("uninitSdk");
 const sendMediaSideInfoButton = document.getElementById("sendMediaSideInfo");
+
+const changeImgCaptureSrcButton = document.getElementById("changeImgCaptureSrc");
+const changeCameraCaptureSrcButton = document.getElementById("changeCameraCaptureSrc");
+const changeScreenCaptureSrcButton = document.getElementById("changeScreenCaptureSrc");
+const changeVideoFileCaptureSrcButton = document.getElementById("changeVideoFileCaptureSrc");
+
+var custom_capture_channel_index  = ZEGOCONSTANTS.PublishChannelIndex.PUBLISH_CHN_AUX;
+var camera_channel_index  = ZEGOCONSTANTS.PublishChannelIndex.PUBLISH_CHN_MAIN;
+
+var img_cap_src = null;
+var camera_cap_src = null;
+var screen_cap_src = null;
+var video_file_cap_src = null;
+
+var cur_sel_camera_index = 5;
+
+// 创建图像源
+function createImgCaptureSrc()
+{
+  let cap_src = zegoClient.createCustomCaptureSource({capture_type:ZEGOCONSTANTS.ZegoCustomCaptureType.IMAGE_TYPE});
+  if(cap_src != -1){
+      console.log("创建图像源成功，cap_src = ", cap_src);
+      zegoClient.setImageCaptureSourceParam({capture_src:cap_src, image_path:"d:/lenna.bmp"});
+      img_cap_src = cap_src;
+  }else {
+      console.log("创建图像源失败");
+  }
+}
+
+// 创建屏幕分享源
+function createScreenCaptureSrc()
+{
+  let cap_src = zegoClient.createCustomCaptureSource({capture_type:ZEGOCONSTANTS.ZegoCustomCaptureType.SCREEN_TYPE});
+  if(cap_src != -1){
+      console.log("创建屏幕分享源成功，cap_src = ", cap_src);
+      screen_cap_src = cap_src;
+  }else {
+      console.log("创建屏幕分享源失败");
+  }
+}
+
+// 创建摄像头源
+function createCameraCaptureSrc()
+{
+  let cap_src = zegoClient.createCustomCaptureSource({capture_type:ZEGOCONSTANTS.ZegoCustomCaptureType.CAMERA_TYPE});  
+  if(cap_src != -1){
+      console.log("创建摄像头采集源成功，cap_src = ", cap_src);
+      camera_cap_src = cap_src;
+  }else {
+      console.log("创建摄像头采集源失败");
+  }    
+}
+
+// 创建视频文件源
+function createVideoFileCaptureSrc()
+{
+  let cap_src = zegoClient.createCustomCaptureSource({capture_type:ZEGOCONSTANTS.ZegoCustomCaptureType.VIDEO_FILE_TYPE});  
+  if(cap_src != -1){
+      console.log("创建视频文件源成功，cap_src = ", cap_src);
+      video_file_cap_src = cap_src;
+  }else {
+      console.log("创建视频文件源失败");
+  }
+}
+
+
+// 切换为图片源
+let img_change = true;
+changeImgCaptureSrcButton.onclick = () => {
+    
+    if(img_change){
+        img_change = false;
+        zegoClient.setImageCaptureSourceParam({capture_src:img_cap_src, image_path:"d:/cornfield.bmp"});
+    }else{
+        img_change = true;
+        zegoClient.setImageCaptureSourceParam({capture_src:img_cap_src, image_path:"d:/lenna.bmp"});
+    }
+    
+    let ret = zegoClient.setCustomCaptureSource({capture_src:img_cap_src, channel_index:custom_capture_channel_index});
+    
+    zegoClient.setVideoFPS({fps:5, channel_index:custom_capture_channel_index});
+    
+    console.log("setCustomCaptureSource ret = ", ret);
+}
+
+// 切换为摄像头源
+changeCameraCaptureSrcButton.onclick = () => {
+  
+  // 获取摄像头设备列表
+  let video_devices_list = zegoClient.getVideoDeviceList();
+  console.log("got video devices list:", video_devices_list);
+  if(video_devices_list.length > 0){
+      
+    zegoClient.setCameraCaptureSourceParam({capture_src:camera_cap_src, device_id:video_devices_list[cur_sel_camera_index].device_id})
+    
+    console.log(video_devices_list[cur_sel_camera_index].device_id);
+    
+    cur_sel_camera_index = cur_sel_camera_index + 1
+    if(cur_sel_camera_index >= video_devices_list.length)
+    {
+        cur_sel_camera_index = 0;
+    }
+  }
+  
+  let ret = zegoClient.setCustomCaptureSource({capture_src:camera_cap_src, channel_index:custom_capture_channel_index});
+  console.log("setCustomCaptureSource ret = ", ret);
+  
+  zegoClient.setVideoFPS({fps:15, channel_index:custom_capture_channel_index});
+  zegoClient.setVideoEncodeResolution({width:640, height:480, channel_index:custom_capture_channel_index});
+  zegoClient.setVideoBitrate({bitrate: 600000, channel_index:custom_capture_channel_index});
+  
+}
+
+var target_window_list = null
+var current_sel_window_index = 0
+
+function testChangeCaptureWindow()
+{
+    
+    let screen_list = zegoClient.screenCaptureEnumScreenList();
+    console.log("屏幕列表:", screen_list);
+
+    if(target_window_list == null)
+    {
+        target_window_list = zegoClient.screenCaptureEnumWindowList({is_include_iconic:false});
+        
+        console.log("窗口列表:", target_window_list);      
+    }
+    
+    zegoClient.setScreenCaptureSourceParam({capture_src:screen_cap_src, target_window:target_window_list[current_sel_window_index].handle, target_window_model:1});
+    
+    console.log("当前选择分享的窗口:",target_window_list[current_sel_window_index])
+    
+    current_sel_window_index = current_sel_window_index + 1
+    
+    if(current_sel_window_index >= target_window_list.length)
+    {
+        current_sel_window_index = 0;
+    }
+}
+
+function testShareFullScreen()
+{    
+    zegoClient.setScreenCaptureSourceParam({capture_src:screen_cap_src, full_screen:true});   
+}
+
+
+var ktarget_rect_left = 0
+var ktarget_rect_top = 0 
+var ktarget_rect_width = 500
+var ktarget_rect_height = 500
+
+function testChangeCaptureRect()
+{    
+    let screen_list = zegoClient.screenCaptureEnumScreenList();
+    console.log("屏幕列表:", screen_list);    
+    
+    zegoClient.setScreenCaptureSourceParam({capture_src:screen_cap_src, target_screen:screen_list[0].screen_name, target_rect_left:ktarget_rect_left, target_rect_top:ktarget_rect_top, target_rect_width:ktarget_rect_width, target_rect_height:ktarget_rect_height});
+    ktarget_rect_width = ktarget_rect_width + 100;
+    ktarget_rect_height = ktarget_rect_height + 100;
+    console.log(ktarget_rect_width, ktarget_rect_height);
+}
+
+
+// 切换为屏幕分享源
+changeScreenCaptureSrcButton.onclick = () => {
+          
+    let ret = zegoClient.setCustomCaptureSource({capture_src:screen_cap_src, channel_index:custom_capture_channel_index});
+    console.log("setCustomCaptureSource screen_cap_src ret = ", ret);
+    
+    //zegoClient.setScreenCaptureSourceParam({capture_src:screen_cap_src,cursor_visible:false});
+    //zegoClient.setScreenCaptureSourceParam({capture_src:screen_cap_src,click_animation:false});
+    
+    //testChangeCaptureWindow();
+    
+    //testChangeCaptureRect();
+    
+    testShareFullScreen();
+    
+    zegoClient.setVideoFPS({fps:15, channel_index:custom_capture_channel_index});
+    zegoClient.setVideoEncodeResolution({width:1920, height:1080, channel_index:custom_capture_channel_index});
+    zegoClient.setVideoBitrate({bitrate: 3000000, channel_index:custom_capture_channel_index});    
+}
+
+// 切换为视频文件源
+changeVideoFileCaptureSrcButton.onclick = () => {
+    
+    zegoClient.setVideoFileCaptureSourceParam({capture_src:video_file_cap_src, video_file_path:"D:/ad.mp4",  is_repeat:true})
+    
+    let ret = zegoClient.setCustomCaptureSource({capture_src:video_file_cap_src, channel_index:custom_capture_channel_index});
+    console.log("setCustomCaptureSource ret video_file_cap_src = ", ret);
+    // 
+    zegoClient.setVideoFPS({fps:15, channel_index:custom_capture_channel_index});
+    
+    zegoClient.setVideoEncodeResolution({width:1920, height:1080, channel_index:custom_capture_channel_index});
+    zegoClient.setVideoBitrate({bitrate: 3000000, channel_index:custom_capture_channel_index});    
+}
+
 
 // gen randow word
 function randomWord(len) {
@@ -54,11 +244,11 @@ const TEST_USER_ID = "test_user_id" + randomWord(5);
 // 用户名字
 const TEST_USER_NAME = "test_user_name" + randomWord(5);
 // 房间id
-const TEST_ROOM_ID = "test_room_id" + randomWord(5);
+const TEST_ROOM_ID = "test" + randomWord(5);
 // 房间名字
 const TEST_ROOM_NAME="test_room_name" + randomWord(5);
 // 推流的流id
-const TEST_PUB_STREAM_ID = "test_stram_id" + randomWord(5);
+const TEST_PUB_STREAM_ID = "test" + randomWord(5);
 // 拉流的流id
 const TEST_PLAY_STREAM_ID = TEST_PUB_STREAM_ID;
 
@@ -70,8 +260,17 @@ getVersionButton.onclick = () => {
 // 初始化sdk
 initButton.onclick = () => {
   
+  // 设置辅通道音频源，来自外部采集
+  let r = zegoClient.setAudioSrcForAuxiliaryPublishChannel({type:1});
+  console.log("setAudioSrcForAuxiliaryPublishChannel = " + r)
+    
+  zegoClient.enableAddonLog({enable:true});
+  
   // 配置设置当前环境为测试环境
   zegoClient.setUseEnv({ use_test_env: true });
+  
+  // custom_capture_channel_index通道，开启自定义采集源，用于分享屏幕
+  zegoClient.enableCustomCapture({ channel_index:custom_capture_channel_index });
   
   // 初始化sdk
   let ret = zegoClient.initSDK({
@@ -82,6 +281,15 @@ initButton.onclick = () => {
   }, rs => {
     if (rs.error_code == 0) {
       console.log("sdk初始化成功");
+      
+      // 创建屏幕分享源
+      createScreenCaptureSrc();
+      // 创建摄像头分享源
+      createCameraCaptureSrc();
+      // 创建图片分享源
+      createImgCaptureSrc();
+      // 创建视频文件分享源
+      createVideoFileCaptureSrc();
 
     } else {
       console.log("sdk初始化失败,错误码为：" + rs.error_code);
@@ -128,14 +336,20 @@ selectVideoDeviceButton.onclick = () => {
 
 // 预览本地摄像头
 previewButton.onclick = () => {
+  
+  // 系统声卡采集
+  zegoClient.enableMixSystemPlayout({enable:true});
+  
+  zegoClient.setVideoCaptureResolution({width:1080, height:720, channel_index:camera_channel_index});
+  zegoClient.setVideoEncodeResolution({width:1080, height:720, channel_index:camera_channel_index});  
   // 预览视频
   let set_ret = zegoClient.setPreviewView({
     canvas_view: document.getElementById("localVideo"),
-    channel_index: ZEGOCONSTANTS.PublishChannelIndex.PUBLISH_CHN_MAIN
+    channel_index: camera_channel_index
   });
   if (set_ret) {
     let preview_ret = zegoClient.startPreview({
-      channel_index: ZEGOCONSTANTS.PublishChannelIndex.PUBLISH_CHN_MAIN
+      channel_index: camera_channel_index
     });
     console.log("预览结果", preview_ret);
     
@@ -149,36 +363,89 @@ previewButton.onclick = () => {
     zegoClient.enableAGC({enable:true});    
     
   }
+  
+zegoClient.setPreviewView({
+    canvas_view: document.getElementById("screen"),
+    channel_index: custom_capture_channel_index
+  });  
+  
+zegoClient.startPreview({
+  channel_index: custom_capture_channel_index
+});  
+}
+
+stopPreviewButton.onclick = () => {
+    
+    zegoClient.stopPreview({});
 }
 
 // 开始推流
 publishStreamButton.onclick = () => {
-  // 开始推流
+  // 开始推流，主通道，摄像头
   let ret = zegoClient.startPublishing({
-    title: "zego electron simple test xx",
-    stream_id: TEST_PUB_STREAM_ID,
+    title: "zego electron simple test camera",
+    stream_id: TEST_PUB_STREAM_ID + "_camera",
     publish_flag: ZEGOCONSTANTS.ZegoPublishFlag.ZEGO_JOIN_PUBLISH,
-    params: ""
-  });
+    params: "",
+    channel_index: camera_channel_index
+  });  
+  
+  // 开始推流，辅通道，屏幕采集
+  //zegoClient.startPublishing({
+  //  title: "zego electron simple test screen",
+  //  stream_id: TEST_PUB_STREAM_ID + "_screen",
+  //  publish_flag: ZEGOCONSTANTS.ZegoPublishFlag.ZEGO_JOIN_PUBLISH,
+  //  params: "",
+  //  channel_index: custom_capture_channel_index
+  //});
+}
+
+// 开始录制
+startRecordButton.onclick = () => {
+    // 录制辅通道，屏幕采集
+    zegoClient.startRecord({storage_path:"d:\\zego_record.mp4", channel_index: custom_capture_channel_index})
+}
+
+// 停止录制
+stopRecord.onclick = () => {    
+    zegoClient.stopRecord({channel_index: custom_capture_channel_index});
 }
 
 // 开始拉流播放
 playStreamButton.onclick = () => {
   zegoClient.startPlayingStream({
-    stream_id: TEST_PLAY_STREAM_ID,
+    stream_id: TEST_PLAY_STREAM_ID + "_camera" ,
     canvas_view: document.getElementById("remoteVideo"),
     params: ""
   });
+
+  //zegoClient.startPlayingStream({
+  //  stream_id: TEST_PLAY_STREAM_ID + "_screen",
+  //  canvas_view: document.getElementById("remoteScreen"),
+  //  params: ""
+  //});
+  
+// zegoClient.startPlayingStream2({
+//   stream_id: "111",
+//   canvas_view: document.getElementById("remoteVideo"),
+//   urls:["rtmp://rtmp.ws.zego.im/zegodemo/111"],
+//   params: "",
+//   should_switch_server:true
+//   
+// });  
+  
 }
 
 // 停止拉流
 stopPlayButton.onclick = () => {
-  zegoClient.stopPlayingStream({ stream_id: TEST_PLAY_STREAM_ID });
+  zegoClient.stopPlayingStream({ stream_id: TEST_PLAY_STREAM_ID + "_camera"  });
+  //zegoClient.stopPlayingStream({ stream_id: TEST_PLAY_STREAM_ID + "_screen"  });
 }
 
 // 停止推流
 stopPublishButton.onclick = () => {
-  zegoClient.stopPublishing({ channel_index: ZEGOCONSTANTS.PublishChannelIndex.PUBLISH_CHN_MAIN });
+  zegoClient.stopPublishing({ channel_index: camera_channel_index });
+  //zegoClient.stopPublishing({ channel_index: custom_capture_channel_index });
 }
 
 // 退出房间
@@ -220,16 +487,6 @@ zegoClient.onEventHandler("onPlayStateUpdate", rs => {
   if (rs.error_code == 0) {
     console.log("拉流成功, 流id=" + rs.stream_id);
   } else {
-    // 错误码
-    //  = 0        拉流成功
-    //  = 3        直播遇到严重错误。stateCode = 1/2 基本不会出现|请检查：1、客户端网络是否正常(从CDN拉客户端解析拉流域名失败);2、超过拉流路数(默认同时支持12路)范围限制。
-    //  = 5        获取流信息失败| 基本不会出现
-    //  = 6        流不存在。|请检查：1.环境是否相同(推流端和拉流端的appid和正式或测试环境是否一致);2、拉流的streamid是否已推流成功。
-    //  = 7        媒体服务器连接失败。|1、推流端是否推流成功；2、环境是否相同(推流端和拉流端的appid和正式或测试环境是否一致)；3.网络是否正常。
-    //  = 9        未 loginRoom 就直接调用startPlayingStream。|请检查：推流前是否已调用loginRoom。
-    //  = 197612   拉的流不存在|请检查：拉流的streamid是否已推流成功。
-    //  = 197619   禁止拉流|请检查：是否已调用后台禁止推流接口禁止此streamid推流。
-    //  = 262145   拉流被拒绝|请检查：streamid是否已推流
     console.log('拉流失败,错误码为' + rs.error_code);
   }
 });
@@ -246,11 +503,6 @@ zegoClient.onEventHandler("onPublishStateUpdate", rs => {
   if (rs.error_code == 0) {
     console.log("推流成功, 流id=" + rs.stream_id);
   } else {
-    // 错误码
-    //  = 0        推流成功
-    //  = 4        创建直播流失败。|请检查：1、userId\userName是否为空;2、streamid是否已存在；3、是否有开启测试环境(未配置正式环境的情况下)；4、appid\appkey是否正确。
-    //  = 7        媒体服务器连接失败。|请检查：客户端网络是否正常。
-    //  = 8        DNS 解析失败。|请检查：1、客户端网络是否正常(从CDN拉客户端解析拉流域名失败);
     console.log('推流失败,错误码为' + rs.error_code);
   }
 });
@@ -305,10 +557,17 @@ zegoClient.onEventHandler("onReconnect", rs => { console.log("与 server 重连�
 zegoClient.onEventHandler("onTempBroken", rs => { console.log("临时中断通知，onTempBroken, rs = ", rs); });
 // 引擎结束停止通知
 zegoClient.onEventHandler("onAVEngineStop", () => { console.log("引擎结束停止通知，onAVEngineStop"); });
+
 // 录制状态回调
 zegoClient.onEventHandler("onRecordStatusUpdate", rs => {
   console.log("录制状态回调，onRecordStatusUpdate, rs = ", rs);
 });
+
+// 录制回调
+zegoClient.onEventHandler("onMediaRecord", rs => {
+  console.log("录制结果回调，onMediaRecord, rs = ", rs);
+});
+
 // 收到媒体次要信息回调
 zegoClient.onEventHandler("onRecvMediaSideInfo", rs => {console.log("收到媒体次要信息", rs);})
 
