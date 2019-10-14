@@ -242,8 +242,7 @@ var zegoClient = new ZegoLiveRoom();
     "postinstall": "node node_modules/zegodown/bin/zegodown  -v 4.0.8"
   },
   "dependencies": {
-    "zegoliveroom": "latest",
-    "zegodown": "latest"
+    "zegoliveroom": "latest"
   }
 ```
 
