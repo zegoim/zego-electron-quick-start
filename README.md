@@ -237,9 +237,11 @@ var zegoClient = new ZegoLiveRoom();
 
 在自己项目中的package.json文件，添加以下内容(其中4.0.8 表示对应的Electron版本号)。然后执行npm install
 
+1. 方式一
+
 ```
   "scripts": {
-    "postinstall": "node node_modules/zegodown/bin/zegodown  -v 4.0.8"
+    "postinstall": "node node_modules/zegodown/bin/zegodown -v 4.0.8"
   },
   "dependencies": {
     "zegoliveroom": "latest",
@@ -257,11 +259,33 @@ node node_modules/zegodown/bin/zegodown  -v 4.0.8 -a x64
 
 mac 下不支持32位，默认为64位。
 
+或者使用下面的配置进行配置
+
+2. 方式二
+
+"electron": "4.0.8" 表示对应的Electron版本号，
+
+"arch": "auto"      表示自动根据平台下载32位或者64位信息。
+
+"arch": "ia32"      表示指定32位的zego sdk。
+
+"arch": "x64"       表示指定64位zego sdk。
+
+```
+  "zegoDeps": {
+    "electron": "4.0.8",
+    "arch": "auto"
+  },
+  "dependencies": {
+    "zegoliveroom": "latest"
+  }
+```
+
 下载的Zego Electron Sdk 会自动解压放在node_modules/zegoliveroom目录下
 
 目前支持指定以下版本Electron
 
-['2.0.18', '3.0.16', '3.1.13', '4.0.8', '4.1.5', '4.2.11', '5.0.11']
+['1.8.4', '1.8.8', '2.0.18', '3.0.16', '3.1.13', '4.0.8', '4.1.5', '4.2.11', '5.0.11']
 
 
 版本说明：
@@ -282,11 +306,17 @@ mac 下不支持32位，默认为64位。
 npm view electron versions
 ```
 
+
 用以上命令可以看到Electron的2.0版本有：2.0.0到2.0.18，目前Electron的2.0版本最高版本是2.0.18。那么ZEGO 就会对2.0.18进行支持，
 
-所以使用ZEGO的2.0.18版本的sdk就能兼容Electron的2.0.0到2.0.18的任何一个版本。以此类推：
+所以ZEGO 的2.0.18版本的sdk就能兼容Electron的2.0.0到2.0.18的任何一个版本，以此类推：
 
-以此类推，目前ZEGO能默认支持2.0 到 5.0 的所有Electron版本，用户根据相关的版本号进行配置下载即可。
+目前ZEGO能默认支持：1.8.4 、1.8.8版本，以及2.0 到 5.0 的所有Electron版本，用户根据相关的版本号进行配置下载即可。
+
+
+
+
+
 
 
 ## 工程运行后，界面如下
