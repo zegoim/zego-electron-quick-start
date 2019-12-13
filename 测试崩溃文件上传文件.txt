@@ -1,0 +1,23 @@
+
+1. 搭建一个服务器，并修改main.js中相关服务器的地址信息。
+
+// 一、服务器使用 mini-breakpad-server 的配置示例
+// 自己搭建可以参考：https://github.com/electron/mini-breakpad-server
+var post_protocol = 'http:'
+var post_host = '127.0.0.1'
+var post_port = '1127'
+var post_path = '/post'
+
+2. 
+向zego获取app id，ID为字符串,请在 [即构管理控制台](https://console.zego.im/acount) 申请 SDK 初始化需要的 AppID 和 AppSign, [获取 AppID 和 AppSign 指引](https://doc.zego.im/API/HideDoc/GetAppIDGuide/GetAppIDGuideline.html)
+renderer.js 修改第10行和第12行为自己的appid和appsign。
+
+3.安装依赖并执行。 
+
+cnpm install
+npm start
+
+4. 点击最下面的 测试崩溃 按钮即可。
+
+
+
