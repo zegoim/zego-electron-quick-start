@@ -3,8 +3,8 @@
 // All of the Node.js APIs are available in this process.
 
 // 引入zego sdk
-var ZegoLiveRoom = require("zegoliveroom/ZegoLiveRoom.js");
-var ZEGOCONSTANTS = require("zegoliveroom/ZegoConstant.js");
+var ZegoLiveRoom =  window.require("zegoliveroom/ZegoLiveRoom.js");
+var ZEGOCONSTANTS =  window.require("zegoliveroom/ZegoConstant.js");
 
 // app id
 const app_id = ;//向zego获取app id，ID为字符串,请在 [即构管理控制台](https://console.zego.im/acount) 申请 SDK 初始化需要的 AppID 和 AppSign, [获取 AppID 和 AppSign 指引](https://doc.zego.im/API/HideDoc/GetAppIDGuide/GetAppIDGuideline.html)
@@ -70,8 +70,9 @@ getVersionButton.onclick = () => {
 // 初始化sdk
 initButton.onclick = () => {
   
+  // 从官网申请的 AppID 默认是测试环境，而 SDK 初始化默认是正式环境，所以需要在初始化 SDK 前设置测试环境，否则 SDK 会初始化失败，当 App 集成完成后，再向 ZEGO 申请开启正式环境。
   // 配置设置当前环境为测试环境
-  zegoClient.setUseEnv({ use_test_env: true });
+  zegoClient.setUseEnv({ use_test_env: true }); // 注意：上线前需切换为正式环境运营。
   
   // 初始化sdk
   let ret = zegoClient.initSDK({
@@ -221,15 +222,7 @@ zegoClient.onEventHandler("onPlayStateUpdate", rs => {
     console.log("拉流成功, 流id=" + rs.stream_id);
   } else {
     // 错误码
-    //  = 0        拉流成功
-    //  = 3        直播遇到严重错误。stateCode = 1/2 基本不会出现|请检查：1、客户端网络是否正常(从CDN拉客户端解析拉流域名失败);2、超过拉流路数(默认同时支持12路)范围限制。
-    //  = 5        获取流信息失败| 基本不会出现
-    //  = 6        流不存在。|请检查：1.环境是否相同(推流端和拉流端的appid和正式或测试环境是否一致);2、拉流的streamid是否已推流成功。
-    //  = 7        媒体服务器连接失败。|1、推流端是否推流成功；2、环境是否相同(推流端和拉流端的appid和正式或测试环境是否一致)；3.网络是否正常。
-    //  = 9        未 loginRoom 就直接调用startPlayingStream。|请检查：推流前是否已调用loginRoom。
-    //  = 197612   拉的流不存在|请检查：拉流的streamid是否已推流成功。
-    //  = 197619   禁止拉流|请检查：是否已调用后台禁止推流接口禁止此streamid推流。
-    //  = 262145   拉流被拒绝|请检查：streamid是否已推流
+    //  = 0        拉流成功 , 其它错误码 查看官网错误码列表 https://doc.zego.im/API/HideDoc/ErrorCodeTable.html
     console.log('拉流失败,错误码为' + rs.error_code);
   }
 });
@@ -247,10 +240,7 @@ zegoClient.onEventHandler("onPublishStateUpdate", rs => {
     console.log("推流成功, 流id=" + rs.stream_id);
   } else {
     // 错误码
-    //  = 0        推流成功
-    //  = 4        创建直播流失败。|请检查：1、userId\userName是否为空;2、streamid是否已存在；3、是否有开启测试环境(未配置正式环境的情况下)；4、appid\appkey是否正确。
-    //  = 7        媒体服务器连接失败。|请检查：客户端网络是否正常。
-    //  = 8        DNS 解析失败。|请检查：1、客户端网络是否正常(从CDN拉客户端解析拉流域名失败);
+    //  = 0        推流成功, 其它错误码 查看官网错误码列表 https://doc.zego.im/API/HideDoc/ErrorCodeTable.html
     console.log('推流失败,错误码为' + rs.error_code);
   }
 });
