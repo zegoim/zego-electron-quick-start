@@ -22,8 +22,9 @@
     "electron-builder": "^20.28.4"
   },
   "dependencies": {
-    "zegoliveroom": "latest",
-    "zegodown": "latest"
+    "jquery": "^3.4.1",
+    "zegodown": "latest",
+    "zegoliveroom": "latest"
   },
   "build": {
     "extraResources": [
