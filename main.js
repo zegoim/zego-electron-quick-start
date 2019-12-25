@@ -19,16 +19,22 @@ var post_path = '/post'
 //var post_host = 'zegotest.bugsplat.com'
 //var post_port = '80'
 //var post_path = '/post/bp/crash/postBP.php'        
-  
+
+// 调用本函数，当崩溃时会生成dmp文件
+zego_crasher_report_helper.genDmpFileIfCrashed();
 
 // Electron 生成dmp文件的位置为：tmp 目录/产品目录 Crashes/ 
-dmp_file_dir = app.getPath("temp") + "/" + app.getName() + " Crashes"
+var dmp_file_dir = app.getPath("temp") + "/" + app.getName() + " Crashes"
+
+if (process.platform == 'darwin') {
+    dmp_file_dir = app.getPath("temp") + app.getName() + "\ Crashes" + "/pending/"
+}
 
 // 查找zego sdk日志文件, 与调用setLogDir设置的日志目录位置要一致,否则找不到zego sdk的日志
-zego_log_dir = dmp_file_dir
+var zego_log_dir = dmp_file_dir
 
 // 指定打包dmp文件和日志文件的临时压缩文件
-tmp_zip_file_path = zego_log_dir + "/log.zip"
+var tmp_zip_file_path = zego_log_dir + "/log.zip"
 
 // 程序启动时，先会搜索dmp文件，如果指定目录下有dmp文件就会打包dmp文件和日志文件并且上传
 // 上传成功后才会删除
@@ -69,7 +75,8 @@ function createWindow() {
 
     // 添加崩溃监听
     // 在这里收集崩溃文件和日志文件，并把崩溃文件和日志文件上传到服务器
-    mainWindow.webContents.on('crashed', function () {    
+    mainWindow.webContents.on('crashed', function () {
+        //console.log("crashed event...",dmp_file_dir);
         // 监听到崩溃时搜索dmp文件和zego sdk日志文件并上传
         zego_crasher_report_helper.searchDmpFileAndUpload(
         {

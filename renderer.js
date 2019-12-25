@@ -34,7 +34,11 @@ zego_crasher_report_helper.genDmpFileIfCrashed();
 // 指定zego log位置
 // 修改指定日志目录，也要同步修改main.js 的搜索zego sdk 日志的目录zego_log_dir
 app = remote.app
-const zego_log_dir = app.getPath("temp") + "/" + app.getName() + " Crashes"
+var zego_log_dir = app.getPath("temp") + "/" + app.getName() + " Crashes"
+if (process.platform == 'darwin') {
+    zego_log_dir = app.getPath("temp") + app.getName() + "\ Crashes" + "/pending/"
+}
+
 zegoClient.setLogDir({ log_dir: zego_log_dir })
 
 const getVersionButton = document.getElementById("getVersion");
