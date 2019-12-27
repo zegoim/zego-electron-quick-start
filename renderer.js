@@ -6,6 +6,9 @@
 var ZegoLiveRoom =  window.require("zegoliveroom/ZegoLiveRoom.js");
 var ZEGOCONSTANTS =  window.require("zegoliveroom/ZegoConstant.js");
 
+// 引入FaceUnity的滤镜插件
+var ZegoVideoFilterDemo = require("zegoliveroom/ZegoVideoFilter.node");
+
 // app id
 const app_id = ;//向zego获取app id，ID为字符串,请在 [即构管理控制台](https://console.zego.im/acount) 申请 SDK 初始化需要的 AppID 和 AppSign, [获取 AppID 和 AppSign 指引](https://doc.zego.im/API/HideDoc/GetAppIDGuide/GetAppIDGuideline.html)
 // app sign
@@ -37,6 +40,7 @@ const stopPublishButton = document.getElementById("stopPublish");
 const logoutRoomButton = document.getElementById("logoutRoom");
 const uninitSdkButton = document.getElementById("uninitSdk");
 const sendMediaSideInfoButton = document.getElementById("sendMediaSideInfo");
+const sliderButton = document.getElementById("slider1");
 
 // gen randow word
 function randomWord(len) {
@@ -73,6 +77,45 @@ initButton.onclick = () => {
   // 从官网申请的 AppID 默认是测试环境，而 SDK 初始化默认是正式环境，所以需要在初始化 SDK 前设置测试环境，否则 SDK 会初始化失败，当 App 集成完成后，再向 ZEGO 申请开启正式环境。
   // 配置设置当前环境为测试环境
   zegoClient.setUseEnv({ use_test_env: true }); // 注意：上线前需切换为正式环境运营。
+  
+
+  // 获取外部滤镜插件工厂
+  let fac = ZegoVideoFilterDemo.getVideoFilterFactory()
+  
+  // 设置外部滤镜工厂，必须在initSdk之前调用
+  // zegoClient 是 ZEGO Electron SDK ZegoLiveRoom 的实例
+  zegoClient.setVideoFilterFactory({factory: fac})
+  
+  // 初始化FaceUnity美颜滤镜的参数
+  // 参数1：填FaceUnity 的license ，形式为 [-123,23,34,-34,45] 
+  // 参数2：填FaceUnity 的资源文件 v3.bundle 的路径
+  // 参数3：填FaceUnity 的资源文件 face_beautification.bundle 的路径
+  // 参数4：初始化回调，返回结果对象中error_code 为 0 - 成功， -1 - 失败
+  // 返回值：false - 参数无效，true - 正在异步初始化美颜库
+  // 
+  let init_fu_sdk_ret = ZegoVideoFilterDemo.initFuBeautyConfig([此处填写FaceUnity的license，形式一个数组], "此处填写FaceUnity 的 v3.bundle的文件路径", "此处填写FaceUnity 的 face_beautification.bundle的文件路径", function(rs){
+        console.log(rs)
+        if(rs.error_code == 0)
+        {
+            ZegoVideoFilterDemo.enableBeauty(true);
+            
+            let fu_config_ret = ZegoVideoFilterDemo.updateBeautyLevel(10);
+            
+            if(fu_config_ret == true)
+            {
+                console.log("美颜配置成功");
+            }else{
+                console.log("美颜配置失败");
+            }
+        }
+      }
+    );
+        
+  if(!init_fu_sdk_ret)
+  {
+    console.log("美颜配置失败");
+  }  
+  
   
   // 初始化sdk
   let ret = zegoClient.initSDK({
@@ -310,6 +353,21 @@ goButton.onclick = () =>{
     remote.getCurrentWebContents().loadURL(document.getElementById("urlContent").value)
 }
 
-
+sliderButton.onclick = () =>{
+    
+    console.log(document.getElementById("slider1").value)
+    
+    let level = parseInt(document.getElementById("slider1").value)
+    
+    if(level == 0)
+    {
+        ZegoVideoFilterDemo.enableBeauty(false);
+    }else{
+        ZegoVideoFilterDemo.enableBeauty(true);
+        
+    }
+    
+    ZegoVideoFilterDemo.updateBeautyLevel(level);
+}
 
 
