@@ -1,7 +1,9 @@
 
 
 在13行 填写 zego appid
+
 在15行 填写 zego app_sign
+
 在96行填写FaceUnity 的license、指定 v3.bundle 文件的路径，face_beautification.bundle 文件的路径
 
 然后执行以下命令
