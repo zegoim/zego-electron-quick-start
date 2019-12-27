@@ -13,7 +13,7 @@ cnpm install
 
 ```
 
-安装完依赖后，拷贝三个插件
+安装完依赖后，拷贝三个插件, 插件编译：[参考链接](https://github.com/zegoim/faceunity-electron-addon)
 ```
 libsgemm.dll
 nama.dll
