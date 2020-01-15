@@ -11,17 +11,18 @@
 
 ```
 cnpm install
-
 ```
 
-安装完依赖后，拷贝三个插件文件到node_modules/zegoliveroom 目录下。插件工程和编译说明参考：[仓库链接](https://github.com/zegoim/faceunity-electron-addon)
+安装完依赖后，先编译插件，插件工程和编译说明参考：[仓库链接](https://github.com/zegoim/faceunity-electron-addon)
+
+编译完插件后，如果是windows平台，拷贝三个插件文件到node_modules/zegoliveroom 目录下。
 ```
 libsgemm.dll
 nama.dll
 ZegoVideoFilter.node
 ```
 
-
+如果是Mac平台，拷贝ZegoVideoFilter.node 到node_modules/zegoliveroom 目录下即可。
 
 
 最后，执行以下运行Demo
