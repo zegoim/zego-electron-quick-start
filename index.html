@@ -43,11 +43,111 @@
 
   <div>
     <button id="preview">开始预览</button>
-    <canvas id="localVideo" width="360px" height="240px"></canvas>
+    <canvas id="localVideo" width="640px" height="480px"></canvas>
   </div>
   
   美颜等级
   <input id="slider1" type="range" min="0" max="10" step="1" />  
+  
+  <br/>
+  <br/>
+  <br/>
+  美颜精细控制 <br/><br/>
+  一、滤镜 <br/>
+  filter_level  <input id="filter_level" type="range" min="0" max="1" step="0.05" /> <br/>
+  
+   filter_name
+   <select id="filter_name">
+    <option value="origin">    origin     </option>
+    <option value="bailiang1">    bailiang1     </option>
+    <option value="bailiang2">    bailiang2     </option>
+    <option value="bailiang3">    bailiang3     </option>
+    <option value="bailiang4">    bailiang4     </option>
+    <option value="bailiang5">    bailiang5     </option>
+    <option value="bailiang6">    bailiang6     </option>
+    <option value="bailiang7">    bailiang7     </option>
+    <option value="fennen1">      fennen1       </option>
+    <option value="fennen2">      fennen2       </option>
+    <option value="fennen3">      fennen3       </option>
+    <option value="fennen4">      fennen4       </option>
+    <option value="fennen5">      fennen5       </option>
+    <option value="fennen6">      fennen6       </option>
+    <option value="fennen7">      fennen7       </option>
+    <option value="fennen8">      fennen8       </option>
+    <option value="gexing1">      gexing1       </option>
+    <option value="gexing2">      gexing2       </option>
+    <option value="gexing3">      gexing3       </option>
+    <option value="gexing4">      gexing4       </option>
+    <option value="gexing5">      gexing5       </option>
+    <option value="gexing6">      gexing6       </option>
+    <option value="gexing7">      gexing7       </option>
+    <option value="gexing8">      gexing8       </option>
+    <option value="gexing9">      gexing9       </option>
+    <option value="gexing10">     gexing10      </option>
+    <option value="heibai1">      heibai1       </option>
+    <option value="heibai2">      heibai2       </option>
+    <option value="heibai3">      heibai3       </option>
+    <option value="heibai4">      heibai4       </option>
+    <option value="heibai5">      heibai5       </option>
+    <option value="lengsediao1">  lengsediao1   </option>
+    <option value="lengsediao2">  lengsediao2   </option>
+    <option value="lengsediao3">  lengsediao3   </option>
+    <option value="lengsediao4">  lengsediao4   </option>
+    <option value="lengsediao5">  lengsediao5   </option>
+    <option value="lengsediao6">  lengsediao6   </option>
+    <option value="lengsediao7">  lengsediao7   </option>
+    <option value="lengsediao8">  lengsediao8   </option>
+    <option value="lengsediao9">  lengsediao9   </option>
+    <option value="lengsediao10"> lengsediao10  </option>
+    <option value="lengsediao11"> lengsediao11  </option>
+    <option value="nuansediao1">  nuansediao1   </option>
+    <option value="nuansediao2">  nuansediao2   </option>
+    <option value="nuansediao3">  nuansediao3   </option>
+    <option value="xiaoqingxin1"> xiaoqingxin1  </option>
+    <option value="xiaoqingxin2"> xiaoqingxin2  </option>
+    <option value="xiaoqingxin3"> xiaoqingxin3  </option>
+    <option value="xiaoqingxin4"> xiaoqingxin4  </option>
+    <option value="xiaoqingxin5"> xiaoqingxin5  </option>
+    <option value="xiaoqingxin6"> xiaoqingxin6  </option>
+   </select>
+    <br/> <br/> 二、美白和红润<br/>
+    color_level  <input id="color_level" type="range" min="0" max="1" step="0.05" /> <br/>
+    red_level  <input id="red_level" type="range" min="0" max="1" step="0.05" /> <br/>
+    
+    <br/> 三、磨皮<br/>
+    blur_level  <input id="blur_level" type="range" min="0" max="6.0" step="0.5" /> <br/>
+    skin_detect  <input id="skin_detect" type="range" min="0" max="1" step="1" /> <br/>
+    nonskin_blur_scale  <input id="nonskin_blur_scale" type="range" min="0" max="1" step="0.05" /> <br/>
+    heavy_blur  <input id="heavy_blur" type="range" min="0" max="1" step="1" /> <br/>
+    blur_type  <input id="blur_type" type="range" min="0" max="2" step="1" /> <br/>
+    
+    
+    <br/> 四、亮眼<br/>
+    eye_bright  <input id="eye_bright" type="range" min="0" max="1.0" step="0.05" /> <br/>
+    
+    <br/> 五、美牙<br/>
+    tooth_whiten     <input id="tooth_whiten" type="range" min="0" max="1.0" step="0.05" /> <br/>
+        
+    <br/> 五、美型<br/>
+    face_shape_level <input id="face_shape_level" type="range" min="0" max="1.0" step="0.05" /> <br/>
+    change_frames <input id="change_frames" type="range" min="0" max="30" step="1" /> <br/>
+    face_shape <input id="face_shape" type="range" min="0" max="4" step="1" /> <br/>
+    
+    <br/>
+    大眼eye_enlarging <input id="eye_enlarging" type="range" min="0" max="1" step="0.05" /> <br/>
+    瘦脸cheek_thinning <input id="cheek_thinning" type="range" min="0" max="1" step="0.05" /> <br/>
+    v脸cheek_v <input id="cheek_v" type="range" min="0" max="1" step="0.05" /> <br/>
+    窄脸cheek_narrow <input id="cheek_narrow" type="range" min="0" max="1" step="0.05" /> <br/>
+    小脸cheek_small <input id="cheek_small" type="range" min="0" max="1" step="0.05" /> <br/>
+    瘦鼻intensity_nose <input id="intensity_nose" type="range" min="0" max="1" step="0.05" /> <br/>
+    额头intensity_forehead <input id="intensity_forehead" type="range" min="0" max="1" step="0.05" /> <br/>
+    嘴巴intensity_mouth <input id="intensity_mouth" type="range" min="0" max="1" step="0.05" /> <br/>
+    下巴intensity_chin <input id="intensity_chin" type="range" min="0" max="1" step="0.05" /> <br/>
+
+
+  <br/>
+  <br/>
+  <br/>
 
   <div>
     <button id="publishStream">开始推流</button>
@@ -55,7 +155,7 @@
 
   <div>
     <button id="playStream">开始拉流</button>
-    <canvas id="remoteVideo" width="360px" height="240px"></canvas>
+    <canvas id="remoteVideo" width="640px" height="480px"></canvas>
   </div>
   
   <div>

@@ -32,3 +32,15 @@ npm start
 运行起来后，依次点击：
 
 初始化sdk --> 登录房间 --> 开始预览 --> 调节美颜等级 --> 开始推流 --> 开始拉流
+
+精细控制其他美颜参数，调节相关的按钮参数即可。
+
+相关美颜参考
+    
+http://www.faceunity.com/
+
+https://github.com/Faceunity/FULivePC/blob/master/docs/Beautification_Filters_User_Specification.md
+
+https://github.com/Faceunity/FULivePC/blob/master/docs/%E7%BE%8E%E9%A2%9C%E9%81%93%E5%85%B7%E5%8A%9F%E8%83%BD%E6%96%87%E6%A1%A3.md
+    
+

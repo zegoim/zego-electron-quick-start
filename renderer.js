@@ -93,7 +93,7 @@ initButton.onclick = () => {
   // 参数4：初始化回调，返回结果对象中error_code 为 0 - 成功， -1 - 失败
   // 返回值：false - 参数无效，true - 正在异步初始化美颜库
   // 
-  let init_fu_sdk_ret = ZegoVideoFilterDemo.initFuBeautyConfig([此处填写FaceUnity的license，形式一个数组], "此处填写FaceUnity 的 v3.bundle的文件路径", "此处填写FaceUnity 的 face_beautification.bundle的文件路径", function(rs){
+  let init_fu_sdk_ret = ZegoVideoFilterDemo.initFuBeautyConfig([此处填写FaceUnity的license，形式是一个数组], "此处填写FaceUnity 的 v3.bundle的文件路径", "此处填写FaceUnity 的 face_beautification.bundle的文件路径", function(rs){
         console.log(rs)
         if(rs.error_code == 0)
         {
@@ -104,6 +104,7 @@ initButton.onclick = () => {
             if(fu_config_ret == true)
             {
                 console.log("美颜配置成功");
+                
             }else{
                 console.log("美颜配置失败");
             }
@@ -272,7 +273,7 @@ zegoClient.onEventHandler("onPlayStateUpdate", rs => {
 
 // 拉流质量更新事件通知
 zegoClient.onEventHandler("onPlayQualityUpdate", rs => {
-  console.log("拉流质量更新事件通知，onPlayQualityUpdate, rs = ", rs);
+  //console.log("拉流质量更新事件通知，onPlayQualityUpdate, rs = ", rs);
 });
 
 
@@ -301,7 +302,9 @@ zegoClient.onEventHandler("onStreamUpdated", rs => {
 });
 
 // 推流质量通知
-zegoClient.onEventHandler("onPublishQualityUpdate", rs => { console.log("推流质量通知，onPublishQualityUpdate, rs = ", rs); });
+zegoClient.onEventHandler("onPublishQualityUpdate", rs => {
+    //console.log("推流质量通知，onPublishQualityUpdate, rs = ", rs); 
+});
 // 房间用户更新
 zegoClient.onEventHandler("onUserUpdate", rs => { console.log("房间用户更新，onUserUpdate, rs = ", rs); });
 // 房间在线人数更新
@@ -363,11 +366,310 @@ sliderButton.onclick = () =>{
     {
         ZegoVideoFilterDemo.enableBeauty(false);
     }else{
-        ZegoVideoFilterDemo.enableBeauty(true);
-        
+        ZegoVideoFilterDemo.enableBeauty(true);        
     }
     
     ZegoVideoFilterDemo.updateBeautyLevel(level);
+
 }
+
+// filter_level 取值范围 0.0-1.0,0.0为无效果，1.0为最大效果，默认值1.0
+var filter_level = 1.0
+document.getElementById("filter_level").onclick = () =>{
+    filter_level = parseFloat(document.getElementById("filter_level").value)
+    console.log("filter_level = " + filter_level)
+    updateBeautyParam()
+}
+
+// filter_name 取值为一个字符串，默认值为 “origin” ，origin即为使用原图效果
+var filter_name = "origin"
+document.getElementById("filter_name").onchange = () =>{
+    filter_name = document.getElementById("filter_name").value
+    console.log("filter_name = " + filter_name)
+    updateBeautyParam()
+}
+
+// 美白
+// color_level 取值范围 0.0-1.0,0.0为无效果，1.0为最大效果，默认值0.2
+var color_level = 0.2
+document.getElementById("color_level").onclick = () =>{
+    color_level = parseFloat(document.getElementById("color_level").value)
+    console.log("color_level = " + color_level)
+    updateBeautyParam()
+}
+
+// 红润
+// red_level 取值范围 0.0-1.0,0.0为无效果，1.0为最大效果，默认值0.5
+var red_level = 0.5
+document.getElementById("red_level").onclick = () =>{
+    red_level = parseFloat(document.getElementById("red_level").value)
+    console.log("red_level = " + red_level)
+    updateBeautyParam()
+}
+
+// 磨皮
+// 控制磨皮的参数有四个：blur_level，skin_detect，nonskin_blur_scale，heavy_blur，blur_type
+
+
+// blur_level: 磨皮程度，取值范围0.0-6.0，默认6.0
+var blur_level = 1
+document.getElementById("blur_level").onclick = () =>{
+    blur_level = parseInt(document.getElementById("blur_level").value)
+    console.log("blur_level = " + blur_level)
+    updateBeautyParam()
+}
+
+// skin_detect:肤色检测开关，0为关，1为开
+var skin_detect = 1
+document.getElementById("skin_detect").onclick = () =>{
+    skin_detect = parseInt(document.getElementById("skin_detect").value)
+    console.log("skin_detect = " + skin_detect)
+    updateBeautyParam()
+}
+
+
+// nonskin_blur_scale:肤色检测之后非肤色区域的融合程度，取值范围0.0-1.0，默认0.45
+var nonskin_blur_scale = 0.45
+document.getElementById("nonskin_blur_scale").onclick = () =>{
+    nonskin_blur_scale = parseFloat(document.getElementById("nonskin_blur_scale").value)
+    console.log("nonskin_blur_scale = " + nonskin_blur_scale)
+    updateBeautyParam()
+}
+
+
+// heavy_blur: 朦胧磨皮开关，0为清晰磨皮，1为朦胧磨皮
+var heavy_blur = 0
+document.getElementById("heavy_blur").onclick = () =>{
+    heavy_blur = parseInt(document.getElementById("heavy_blur").value)
+    console.log("heavy_blur = " + heavy_blur)
+    updateBeautyParam()
+}
+
+// blur_type：此参数优先级比heavy_blur低，在使用时要将heavy_blur设为0，0 清晰磨皮  1 朦胧磨皮  2精细磨皮
+var blur_type = 2
+document.getElementById("blur_type").onclick = () =>{
+    blur_type = parseInt(document.getElementById("blur_type").value)
+    console.log("blur_type = " + blur_type)
+    updateBeautyParam()
+}
+
+// 亮眼 eye_bright   取值范围 0.0-1.0,0.0为无效果，1.0为最大效果，默认值1.0
+var eye_bright = 1.0
+document.getElementById("eye_bright").onclick = () =>{
+    eye_bright = parseFloat(document.getElementById("eye_bright").value)
+    console.log("eye_bright = " + eye_bright)
+    updateBeautyParam()
+}
+
+// 美牙 tooth_whiten   取值范围 0.0-1.0,0.0为无效果，1.0为最大效果，默认值1.0
+var tooth_whiten = 1.0
+document.getElementById("tooth_whiten").onclick = () =>{
+    tooth_whiten = parseFloat(document.getElementById("tooth_whiten").value)
+    console.log("tooth_whiten = " + tooth_whiten)
+    updateBeautyParam()
+}
+
+// 美型 face_shape_level   取值范围 0.0-1.0,0.0为无效果，1.0为最大效果，默认值1.0
+var face_shape_level = 1.0
+document.getElementById("face_shape_level").onclick = () =>{
+    face_shape_level = parseFloat(document.getElementById("face_shape_level").value)
+    console.log("face_shape_level = " + face_shape_level)
+    updateBeautyParam()
+}
+
+// 美型的渐变由change_frames参数控制
+// change_frames       0为关闭 ，大于0开启渐变，值为渐变所需要的帧数
+var change_frames = 0
+document.getElementById("change_frames").onclick = () =>{
+    change_frames = parseInt(document.getElementById("change_frames").value)
+    console.log("change_frames = " + change_frames)
+    updateBeautyParam()
+}
+
+// 美型的种类主要由face_shape 参数控制
+// face_shape: 变形取值 0:女神变形 1:网红变形 2:自然变形 3:默认变形 4:精细变形
+var face_shape = 3
+document.getElementById("face_shape").onclick = () =>{
+    face_shape = parseInt(document.getElementById("face_shape").value)
+    console.log("face_shape = " + face_shape)
+    updateBeautyParam()
+}
+
+// face_shape 为0 1 2 3时
+// 对应0：女神 1：网红 2：自然 3：默认
+// 可以使用参数
+// eye_enlarging: 	默认0.5,		//大眼程度范围0.0-1.0
+// cheek_thinning:	默认0.0,  		//瘦脸程度范围0.0-1.0
+
+// face_shape 为4时，为用户自定义的精细变形，开放了脸型相关参数，添加了窄脸小脸参数
+// eye_enlarging: 	默认0.5,		//大眼程度范围0.0-1.0
+// cheek_thinning:	默认0.0,  		//瘦脸程度范围0.0-1.0
+// cheek_v:	默认0.0,  		//v脸程度范围0.0-1.0
+// cheek_narrow:   默认0.0,          //窄脸程度范围0.0-1.0
+// cheek_small:   默认0.0,          //小脸程度范围0.0-1.0
+// intensity_nose: 默认0.0,        //瘦鼻程度范围0.0-1.0
+// intensity_forehead: 默认0.5,    //额头调整程度范围0.0-1.0，0-0.5是变小，0.5-1是变大
+// intensity_mouth:默认0.5,       //嘴巴调整程度范围0.0-1.0，0-0.5是变小，0.5-1是变大
+// intensity_chin: 默认0.5,       //下巴调整程度范围0.0-1.0，0-0.5是变小，0.5-1是变大
+var eye_enlarging = 0.5
+document.getElementById("eye_enlarging").onclick = () =>{
+    eye_enlarging = parseFloat(document.getElementById("eye_enlarging").value)
+    console.log("eye_enlarging = " + eye_enlarging)
+    updateBeautyParam()
+}
+
+var cheek_thinning = 0.0
+document.getElementById("cheek_thinning").onclick = () =>{
+    cheek_thinning = parseFloat(document.getElementById("cheek_thinning").value)
+    console.log("cheek_thinning = " + cheek_thinning)
+    updateBeautyParam()
+}
+
+var cheek_v = 0.0
+document.getElementById("cheek_v").onclick = () =>{
+    cheek_v = parseFloat(document.getElementById("cheek_v").value)
+    console.log("cheek_v = " + cheek_v)
+    updateBeautyParam()
+}
+
+var cheek_narrow = 0.0
+document.getElementById("cheek_narrow").onclick = () =>{
+    cheek_narrow = parseFloat(document.getElementById("cheek_narrow").value)
+    console.log("cheek_narrow = " + cheek_narrow)
+    updateBeautyParam()
+}
+
+var cheek_small = 0.0
+document.getElementById("cheek_small").onclick = () =>{
+    cheek_small = parseFloat(document.getElementById("cheek_small").value)
+    console.log("cheek_small = " + cheek_small)
+    updateBeautyParam()
+}
+
+var intensity_nose = 0.0
+document.getElementById("intensity_nose").onclick = () =>{
+    intensity_nose = parseFloat(document.getElementById("intensity_nose").value)
+    console.log("intensity_nose = " + intensity_nose)
+    updateBeautyParam()
+}
+
+var intensity_forehead = 0.5
+document.getElementById("intensity_forehead").onclick = () =>{
+    intensity_forehead = parseFloat(document.getElementById("intensity_forehead").value)
+    console.log("intensity_forehead = " + intensity_forehead)
+    updateBeautyParam()
+}
+
+var intensity_mouth = 0.5
+document.getElementById("intensity_mouth").onclick = () =>{
+    intensity_mouth = parseFloat(document.getElementById("intensity_mouth").value)
+    console.log("intensity_mouth = " + intensity_mouth)
+    updateBeautyParam()
+}
+
+var intensity_chin = 0.5
+document.getElementById("intensity_chin").onclick = () =>{
+    intensity_chin = parseFloat(document.getElementById("intensity_chin").value)
+    console.log("intensity_chin = " + intensity_chin)
+    updateBeautyParam()
+}
+
+//
+//    ZegoVideoFilterDemo.setParameter(JSON.stringify({"plugin.fu.bundles.load": [{
+//          bundlePath: "E:\\zego-electron-quick-start\\Res\\",
+//          bundleName: "face_beautification.bundle",
+//          bundleOptions: {
+//              "filter_level":filter_level,
+//              "filter_name":filter_name,
+//              "color_level": color_level,
+//              "red_level": red_level,
+//              "blur_level": blur_level,
+//              "skin_detect": skin_detect,
+//              "heavy_blur": heavy_blur,
+//              "blur_type": blur_type,
+//              "eye_bright": eye_bright,
+//              "tooth_whiten": tooth_whiten,
+//              "face_shape_level": face_shape_level,
+//              "change_frames": change_frames,
+//              "face_shape": face_shape,
+//              "eye_enlarging": eye_enlarging,
+//              "cheek_thinning": cheek_thinning,
+//              "cheek_v": cheek_v,
+//              "cheek_narrow": cheek_narrow,
+//              "cheek_small": cheek_small,
+//              "intensity_nose": intensity_nose,
+//              "intensity_forehead": intensity_forehead,
+//              "intensity_mouth": intensity_mouth,
+//              "intensity_chin": intensity_chin
+//          }
+//        }]}))
+//
+function updateBeautyParam()
+{
+    let update_param_obj = {"plugin.fu.bundles.update": {
+                        bundleName: "face_beautification.bundle",
+                        bundleOptions: {
+                          "filter_level":filter_level,
+                          "filter_name":filter_name,
+                          "color_level": color_level,
+                          "red_level": red_level,
+                          "blur_level": blur_level,
+                          "skin_detect": skin_detect,
+                          "heavy_blur": heavy_blur,
+                          "blur_type": blur_type,
+                          "eye_bright": eye_bright,
+                          "tooth_whiten": tooth_whiten,
+                          "face_shape_level": face_shape_level,
+                          "change_frames": change_frames,
+                          "face_shape": face_shape,
+                          "eye_enlarging": eye_enlarging,
+                          "cheek_thinning": cheek_thinning,
+                          "cheek_v": cheek_v,
+                          "cheek_narrow": cheek_narrow,
+                          "cheek_small": cheek_small,
+                          "intensity_nose": intensity_nose,
+                          "intensity_forehead": intensity_forehead,
+                          "intensity_mouth": intensity_mouth,
+                          "intensity_chin": intensity_chin
+                        }
+                      }}
+    
+    console.log("update param  = ", update_param_obj)
+    
+    let ret = ZegoVideoFilterDemo.setParameter(JSON.stringify(update_param_obj))
+                      
+    console.log("ret = ", ret)
+    
+    console.log("具体参数范围调节，请查看 https://github.com/Faceunity/FULivePC/blob/master/docs/%E7%BE%8E%E9%A2%9C%E9%81%93%E5%85%B7%E5%8A%9F%E8%83%BD%E6%96%87%E6%A1%A3.md ")
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
