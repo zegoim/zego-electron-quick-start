@@ -4,7 +4,7 @@
   "description": "A zego electron sdk quick start application",
   "main": "main.js",
   "scripts": {
-    "postinstall": "node node_modules/zegodown/bin/zegodown -v 5.0.11",
+    "postinstall": "node node_modules/zegodown/bin/zegodown -v 5.0.12-latest",
     "start": "electron .",
     "pkg": "node pkg.js"
   },
@@ -18,10 +18,12 @@
   "author": "zego",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^5.0.11",
+    "electron": "5.0.12",
     "electron-builder": "^20.28.4"
   },
   "dependencies": {
+    "archiver": "^3.1.1",
+    "form-data": "^3.0.0",  
     "zegoliveroom": "latest",
     "zegodown": "latest"
   },
