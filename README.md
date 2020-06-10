@@ -233,20 +233,89 @@ var zegoClient = new ZegoLiveRoom();
 - 房间登录相关说明，查看官网[房间登录](https://www.zego.im/html/document/#Application_Scenes/FAQ/Login)。
 <div STYLE="page-break-after: always;"></div>
 
-## 如何下载指定版本Electron 的 ZEGO LiveRoomSDK
+# ZEGO LiveRoom Electron SDK 版本号迭代管理
 
-在自己项目中的package.json文件，添加以下内容(其中4.0.8 表示对应的Electron版本号)。然后执行npm install
+### Electron SDK版本号
 
-1. 方式一
+在工程package.json文件中，通过指定zego live room sdk版本号，可以下载到指定版本的sdk。
+
+### 迭代版本号
+
+包括两部分：前缀和sdk迭代版本号；
+其中前缀表示对应的Electron版本号。
+sdk迭代版本号是ZEGO每次迭代更新SDK后，以当前年月作为迭代版本号。
+
+例如：2020年5月份zego发布的Electron sdk版本列表如下：
+
+1.8.4-2020-05
+1.8.8-2020-05
+2.0.18-2020-05
+3.0.16-2020-05
+3.1.13-2020-05
+4.0.8-2020-05
+4.1.5-2020-05
+4.2.11-2020-05
+4.2.12-2020-05
+5.0.8-2020-05
+5.0.11-2020-05
+5.0.12-2020-05
+
+
+### latest版本
+
+一些新特性的更新需要，ZEGO 提供latest版本.
+
+通过以下版本号可以下载到对应electron版本的最新zego sdk。
+
+1.8.4-latest
+1.8.8-latest
+2.0.18-latest
+3.0.16-latest
+3.1.13-latest
+4.0.8-latest
+4.1.5-latest
+4.2.11-latest
+4.2.12-latest
+5.0.8-latest
+5.0.11-latest
+5.0.12-latest
+6.0.12-latest
+
+
+### 实践
+
+使用5.0.12的Electron，要下载zego的2020年05月份的版本sdk。配置如下
+
+**方式一：**
+
+通过postinstall配置zegodown指定版本号。
 
 ```
+{
+  "name": "zego-electron-quick-start",
+  "version": "1.0.0",
+  "description": "A zego electron sdk quick start application",
+  "main": "main.js",
   "scripts": {
-    "postinstall": "node node_modules/zegodown/bin/zegodown -v 4.0.8"
+    "postinstall": "node node_modules/zegodown/bin/zegodown -v 5.0.12-2020-05",
+    "start": "electron ."
+  },
+  "author": "zego",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "5.0.12",
+    "electron-builder": "^20.28.4"
   },
   "dependencies": {
     "zegoliveroom": "latest",
     "zegodown": "latest"
+  },
+  "build": {
+    "extraResources": [
+      "./node_modules/zegoliveroom/**"
+    ]
   }
+}
 ```
 
 如果指定下载32位,postinstall配置为
@@ -257,13 +326,44 @@ node node_modules/zegodown/bin/zegodown  -v 4.0.8 -a x64
 
 如果不指定，默认取值为node的os.platform()平台信息
 
-mac 下不支持32位，默认为64位。
+mac 下不支持32位，都为64位。
 
-或者使用下面的配置进行配置
+**方式二：**
 
-2. 方式二
+通过配置zegoDeps指定版本号。
 
-"electron": "4.0.8" 表示对应的Electron版本号，
+```
+{
+  "name": "zego-electron-quick-start",
+  "version": "1.0.0",
+  "description": "A zego electron sdk quick start application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "zegoDeps": {
+    "electron": "5.0.12-2020-05",
+    "arch": "auto"
+  },  
+  "author": "zego",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "5.0.12",
+    "electron-builder": "^20.28.4"
+  },
+  "dependencies": {
+    "zegoliveroom": "latest",
+    "zegodown": "latest"
+  },
+  "build": {
+    "extraResources": [
+      "./node_modules/zegoliveroom/**"
+    ]
+  }
+}
+```
+
+"electron": "5.0.12" 表示对应的Electron版本号，
 
 "arch": "auto"      表示自动根据平台下载32位或者64位信息。
 
@@ -271,55 +371,45 @@ mac 下不支持32位，默认为64位。
 
 "arch": "x64"       表示指定64位zego sdk。
 
-```
-  "zegoDeps": {
-    "electron": "4.0.8",
-    "arch": "auto"
-  },
-  "dependencies": {
-    "zegoliveroom": "latest"
-  }
-```
+ mac 下不支持32位，都为64位。
 
-下载的Zego Electron Sdk 会自动解压放在node_modules/zegoliveroom目录下
+### postinstall 和 zegoDeps区别：
+
+配置postinstall 下载zego sdk，用户每次执行npm install 时，都会从zego服务器下载sdk并替换更新本地的。
+
+配置zegoDeps 只有第一次npm install 时会下载zego sdk，以后执行npm install时，不会再下载更新，除非删除掉node_modules文件夹，在执行npm install 才会重新下载。
+
+
 
 目前支持指定以下版本Electron
 
-['1.8.4', '1.8.8', '2.0.18', '3.0.16', '3.1.13', '4.0.8', '4.1.5', '4.2.11', '5.0.11']
+['1.8.4', '1.8.8', '2.0.18', '3.0.16', '3.1.13', '4.0.8', '4.1.5', '4.2.11', '5.0.11', '5.0.12']
+
+['1.8.4-2020-05',
+'1.8.8-2020-05',
+'2.0.18-2020-05',
+'3.0.16-2020-05',
+'3.1.13-2020-05',
+'4.0.8-2020-05',
+'4.1.5-2020-05',
+'4.2.11-2020-05',
+'4.2.12-2020-05',
+'5.0.8-2020-05',
+'5.0.11-2020-05',
+'5.0.12-2020-05']
+
+['1.8.4-2020-05',
+'1.8.8-2020-05',
+'2.0.18-2020-05',
+'3.0.16-2020-05',
+'3.1.13-2020-05',
+'4.0.8-2020-05',
+'4.1.5-2020-05',
+'4.2.11-2020-05',
+'4.2.12-2020-05',
+'5.0.8-2020-05',
+'5.0.11-2020-05',
+'5.0.12-2020-05']
 
 
-版本说明：
-
-由于Electron 的版本管理规则是从2.0开始符合semver规范：
-
-规范大概是这样的：
-
-版本号由3个数字组成：a.b.c
-
-前面两个数字表示大小版本号的更新，数字a和b发生变化是，都会导致abi的不兼容，但是c的变化只是bug修改，不涉及abi的兼容问题。
-
-例如：
-
-可以通过以下命令查询到目前所有的Electron版本号。
-
-```
-npm view electron versions
-```
-
-
-用以上命令可以看到Electron的2.0版本有：2.0.0到2.0.18，目前Electron的2.0版本最高版本是2.0.18。那么ZEGO 就会对2.0.18进行支持，
-
-所以ZEGO 的2.0.18版本的sdk就能兼容Electron的2.0.0到2.0.18的任何一个版本，以此类推：
-
-目前ZEGO能默认支持：1.8.4 、1.8.8版本，以及2.0 到 5.0 的所有Electron版本，用户根据相关的版本号进行配置下载即可。
-
-
-
-
-
-
-
-## 工程运行后，界面如下
-
-![工程运行后的界面](demo.png)
 
