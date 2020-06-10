@@ -76,9 +76,8 @@ $ npm run pkg
 
 # 要在自己项目中集成zego sdk的步骤
 
-1. 安装zego sdk
-```
-$ npm install zegoliveroom
+1. 参考文档末尾```实践 ```章节集成sdk。
+
 ```
 2. 在工程项目中的renderer.js文件中添加以下代码，引入zego sdk，[参考代码 ](https://github.com/zegoim/zego-electron-quick-start//blob/master/renderer.js#L5)
 ```
