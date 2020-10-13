@@ -4,7 +4,7 @@
   "description": "A zego electron sdk quick start application",
   "main": "main.js",
   "scripts": {
-    "postinstall": "node node_modules/zegodown/bin/zegodown -v 5.0.11",
+    "postinstall": "node node_modules/zegodown/bin/zegodown -v 5.0.12-2020-06",
     "start": "electron .",
     "pkg": "node pkg.js"
   },
@@ -18,16 +18,21 @@
   "author": "zego",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^5.0.11",
+    "electron": "5.0.12",
     "electron-builder": "^20.28.4"
   },
   "dependencies": {
-    "zegoliveroom": "latest",
-    "zegodown": "latest"
+    "zegoliveroom": "1.0.3",
+    "zegodown": "2.0.13"
   },
   "build": {
-    "extraResources": [
-      "./node_modules/zegoliveroom/**"
-    ]
+    "mac": {
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "I need access to your microphone to send your voice to others in the session room.",
+        "NSCameraUsageDescription": "I need access to your camera so that others can see you in the session room."
+      }
+    }
   }
 }
