@@ -6,11 +6,10 @@
 var ZegoLiveRoom = require("zegoliveroom/ZegoLiveRoom.js");
 var ZEGOCONSTANTS = require("zegoliveroom/ZegoConstant.js");
 
-// app id
-const app_id = ""; //向zego获取app id，ID为字符串
-// app key
-const sign_key = [];
-//向zego获取测试sign key，是一个数组，格式例如 [0x01, 0x03, 0x44, ....]
+
+const app_id = ;//向zego获取app id，ID为字符串,请在 [即构管理控制台](https://console.zego.im/acount) 申请 SDK 初始化需要的 AppID 和 AppSign, [获取 AppID 和 AppSign 指引](https://doc.zego.im/API/HideDoc/GetAppIDGuide/GetAppIDGuideline.html)
+// app sign
+const app_sign = [];//向zego获取测试app_sign，是一个数组，格式例如 [0x01, 0x03, 0x44, ....]
 
 // gen randow word
 function randomWord(len) {
@@ -60,6 +59,7 @@ const stopPublishButton = document.getElementById("stopPublish");
 const logoutRoomButton = document.getElementById("logoutRoom");
 const uninitSdkButton = document.getElementById("uninitSdk");
 const sendMediaSideInfoButton = document.getElementById("sendMediaSideInfo");
+const startPublishScreenButton = document.getElementById('startPublishScreen')
 
 const changeImgCaptureSrcButton = document.getElementById(
   "changeImgCaptureSrc"
@@ -448,7 +448,7 @@ initButton.onclick = () => {
   let ret = zegoClient.initSDK(
     {
       app_id: app_id,
-      sign_key: sign_key,
+      sign_key: app_sign,
       user_id: TEST_USER_ID,
       user_name: TEST_USER_NAME
     },
@@ -610,6 +610,27 @@ stopPreviewButton.onclick = () => {
  	 channel_index: current_channel_index2
   });  
 };
+
+// 开始推屏幕流
+startPublishScreenButton.onclick = () => {
+  let publishScreenStreamId = document.getElementById("publishScreenStreamId").value;
+  if( publishScreenStreamId == "")
+  {
+    alert('请输入屏幕流id');
+    return;
+  }
+
+  zegoClient.startPublishing({
+ 	 title: "screen",
+ 	 stream_id: publishScreenStreamId,
+ 	 publish_flag: ZEGOCONSTANTS.ZegoPublishFlag.ZEGO_JOIN_PUBLISH,
+ 	 params: "",
+ 	 channel_index: 0
+  });
+
+  console.log('屏幕流id为', publishScreenStreamId)
+
+}
 
 startRecordButton.onclick = () => {
 	console.log("开始录制")
