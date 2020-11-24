@@ -233,21 +233,152 @@ var zegoClient = new ZegoLiveRoom();
 - 房间登录相关说明，查看官网[房间登录](https://www.zego.im/html/document/#Application_Scenes/FAQ/Login)。
 <div STYLE="page-break-after: always;"></div>
 
-# ZEGO LiveRoom Electron SDK 版本号迭代管理
 
-### Electron SDK版本号
 
-在工程package.json文件中，通过指定zego liveroom sdk版本号，可以下载到指定版本的sdk。
+### ZEGO LiveRoom Electron SDK 版本更新下载说明
 
-### 迭代版本号
-
-包括两部分：前缀和sdk迭代版本号；
-其中前缀表示对应的Electron版本号。
-sdk迭代版本号是ZEGO每次迭代更新SDK后，以当前年月作为迭代版本号。
-
-例如：2020年5月份zego发布的Electron sdk版本列表如下：
+-  依赖zego sdk 的Electron 工程配置文件package.json完整示例配置如下
 
 ```
+{
+  "name": "zego-electron-quick-start",
+  "version": "1.0.0",
+  "description": "A zego electron sdk quick start application",
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "node node_modules/zegodown/bin/zegodown -v 5.0.12-2020-06",
+    "start": "electron .",
+    "pkg": "node pkg.js"
+  },
+  "keywords": [
+    "zego",
+    "electron",
+    "video",
+    "audio",
+    "live"
+  ],
+  "author": "zego",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "5.0.12",
+    "electron-builder": "^20.28.4"
+  },
+  "dependencies": {
+    "zegoliveroom": "1.0.3",
+    "zegodown": "2.0.13"
+  },
+  "build": {
+    "mac": {
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "I need access to your microphone to send your voice to others in the session room.",
+        "NSCameraUsageDescription": "I need access to your camera so that others can see you in the session room."
+      }
+    }
+  }
+}
+
+```
+
+在自己工程项目中集成zego liveroom electron sdk，必须按照以下前三个步骤添加对zego sdk 的依赖，更新sdk请参照第四点操作。
+
++ 一. 需要在dependencies配置中添加zegoliveroom和zegodown的依赖
+
+```
+  "dependencies": {
+    "zegoliveroom": "1.0.3",
+    "zegodown": "2.0.13"
+  },
+```
+
++ 二. 在scripts配置中，添加postinstall，配置zegodown下载zego sdk 的指定版本号
+
+```
+  "scripts": {
+    "postinstall": "node node_modules/zegodown/bin/zegodown -v 5.0.12-2020-06"
+  },
+```
+
++ 三. 配置electron版本号，确保和zegodown配置的zego sdk的前缀版本一致，否则会导致二进制不兼容错误，运行会报错。
+```
+  "devDependencies": {
+    "electron": "5.0.12"
+  },
+```
+
++ 四. 更新zego sdk 的方式
+   把zegodown 配置后面的版本比如：5.0.9-2020-06更改为5.0.9-20-11，表示从6月份迭代版本更新到11月份迭代版本。然后保存，重新执行npm install，重新npm start运行即可完成对zego sdk的更新。
+
+
+<!-- Zego-Split-Line Do Not Remove Me -->
+
+<details>
+    <summary>2020.11.24<span class="second-title"> Version: 2.0.1 </span></summary>
+
+### **新增功能**
+
+1. 新增屏幕采集窗口状态发生变化的回调onScreenCapWindowStateChange。
+
+2. 新增检测mac是否有屏幕捕捉的权限checkScreenCaptureAuthority。
+
+3. 新增设置混音本地播放音量setAuxPlayVolume。
+
+4. 新增设置混音推流音量setAuxPublishVolume。
+
+5. 新增设置混音音量setAuxVolume。
+
+6. 新增是否启用预览和推流镜像setVideoMirrorMode。
+
+7. 新增直推CDN接口setCDNPublishTarget。
+
+8. 新增暴露cpu内存使用质量回调。
+
+9. 新增网络测速探测模块。
+
+### **问题修复**
+
+1. 修复onCustomCommand回调的request_seq错误的问题。
+
+### **改进优化**
+
+1. 文档更新设置拉流播放音量最大值可以设置到200。
+
+### **本次更新通过zegodown可直接下载的版本有**
+
+1.8.4-20-11
+1.8.8-20-11
+2.0.18-20-11
+3.0.16-20-11
+3.1.13-20-11
+4.0.8-20-11
+4.1.5-20-11
+4.2.11-20-11
+4.2.12-20-11
+5.0.8-20-11
+5.0.9-20-11
+
+</details>
+
+
+<details>
+    <summary>历史版本</summary>
+
+### **通过zegodown可下载的历史版本有**
+
+1.8.4-2020-06
+1.8.8-2020-06
+2.0.18-2020-06
+3.0.16-2020-06
+3.1.13-2020-06
+4.0.8-2020-06
+4.1.5-2020-06
+4.2.11-2020-06
+4.2.12-2020-06
+5.0.8-2020-06
+5.0.11-2020-06
+5.0.12-2020-06
+
 1.8.4-2020-05
 1.8.8-2020-05
 2.0.18-2020-05
@@ -260,164 +391,5 @@ sdk迭代版本号是ZEGO每次迭代更新SDK后，以当前年月作为迭代�
 5.0.8-2020-05
 5.0.11-2020-05
 5.0.12-2020-05
-```
-
-### latest版本
-
-一些新特性的更新需要，ZEGO 提供latest版本.
-
-通过以下版本号可以下载到对应electron版本的最新zego sdk。
-
-```
-1.8.4-latest
-1.8.8-latest
-2.0.18-latest
-3.0.16-latest
-3.1.13-latest
-4.0.8-latest
-4.1.5-latest
-4.2.11-latest
-4.2.12-latest
-5.0.8-latest
-5.0.11-latest
-5.0.12-latest
-6.0.12-latest
-```
-
-### 实践
-
-使用5.0.12的Electron，要下载zego的2020年05月份的版本sdk。配置如下
-
-**方式一：**
-
-通过postinstall配置zegodown指定版本号。
-
-```
-{
-  "name": "zego-electron-quick-start",
-  "version": "1.0.0",
-  "description": "A zego electron sdk quick start application",
-  "main": "main.js",
-  "scripts": {
-    "postinstall": "node node_modules/zegodown/bin/zegodown -v 5.0.12-2020-05",
-    "start": "electron ."
-  },
-  "author": "zego",
-  "license": "MIT",
-  "devDependencies": {
-    "electron": "5.0.12",
-    "electron-builder": "^20.28.4"
-  },
-  "dependencies": {
-    "zegoliveroom": "latest",
-    "zegodown": "latest"
-  },
-  "build": {
-    "extraResources": [
-      "./node_modules/zegoliveroom/**"
-    ]
-  }
-}
-```
-
-如果指定下载32位,postinstall配置为
-node node_modules/zegodown/bin/zegodown  -v 4.0.8 -a ia32
-
-如果指定下载64位
-node node_modules/zegodown/bin/zegodown  -v 4.0.8 -a x64
-
-如果不指定，默认取值为node的os.platform()平台信息
-
-mac 下不支持32位，都为64位。
-
-**方式二：**
-
-通过配置zegoDeps指定版本号。
-
-```
-{
-  "name": "zego-electron-quick-start",
-  "version": "1.0.0",
-  "description": "A zego electron sdk quick start application",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron ."
-  },
-  "zegoDeps": {
-    "electron": "5.0.12-2020-05",
-    "arch": "auto"
-  },  
-  "author": "zego",
-  "license": "MIT",
-  "devDependencies": {
-    "electron": "5.0.12",
-    "electron-builder": "^20.28.4"
-  },
-  "dependencies": {
-    "zegoliveroom": "latest",
-    "zegodown": "latest"
-  },
-  "build": {
-    "extraResources": [
-      "./node_modules/zegoliveroom/**"
-    ]
-  }
-}
-```
-
-"electron": "5.0.12" 表示对应的Electron版本号，
-
-"arch": "auto"      表示自动根据平台下载32位或者64位信息。
-
-"arch": "ia32"      表示指定32位的zego sdk。
-
-"arch": "x64"       表示指定64位zego sdk。
-
- mac 下不支持32位，都为64位。
-
-### postinstall 和 zegoDeps区别：
-
-配置postinstall 下载zego sdk，用户每次执行npm install 时，都会从zego服务器下载sdk并替换更新本地的。
-
-配置zegoDeps 只有第一次npm install 时会下载zego sdk，以后执行npm install时，不会再下载更新，除非删除掉node_modules文件夹，在执行npm install 才会重新下载。
-
-
-
-目前支持指定以下版本Electron
-
-```
-['1.8.4', '1.8.8', '2.0.18', '3.0.16', '3.1.13', '4.0.8', '4.1.5', '4.2.11', '5.0.11', '5.0.12']
-
-[
-'1.8.4-2020-05',
-'1.8.8-2020-05',
-'2.0.18-2020-05',
-'3.0.16-2020-05',
-'3.1.13-2020-05',
-'4.0.8-2020-05',
-'4.1.5-2020-05',
-'4.2.11-2020-05',
-'4.2.12-2020-05',
-'5.0.8-2020-05',
-'5.0.11-2020-05',
-'5.0.12-2020-05'
-]
-
-[
-'1.8.4-latest',
-'1.8.8-latest',
-'2.0.18-latest',
-'3.0.16-latest',
-'3.1.13-latest',
-'4.0.8-latest',
-'4.1.5-latest',
-'4.2.11-latest',
-'4.2.12-latest',
-'5.0.8-latest',
-'5.0.11-latest',
-'5.0.12-latest'
-'6.0.12-latest'
-]
-
-```
+</details>
 
