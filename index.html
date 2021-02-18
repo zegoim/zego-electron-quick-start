@@ -16,6 +16,12 @@
   and Electron
   <script>document.write(process.versions.electron)</script>.
   <br/>
+  <style>
+      .canvasClass {
+          width:100%;
+          height:100%;
+      }
+  </style>
   <br/>
   <div>
 
@@ -32,6 +38,8 @@
   <div>
     <button id="init">初始化sdk</button>
   </div>
+  
+
 
   <div>
     <button id="login">登录房间</button>
@@ -41,18 +49,20 @@
     <button id="selectVideoDevice">选择设备</button>
   </div>  
 
-  <div>
-    <button id="preview">开始预览</button>
-    <canvas id="localVideo" width="360px" height="240px"></canvas>
-  </div>
-
+<button id="preview">开始预览</button>
+<br/>
+<canvas class="canvasClass" id="localVideo" width="360" height="240" ></canvas>
+<br/>
+  
+<br/>
+<canvas class="canvasClass" id="remoteVideo" width="360" height="240" ></canvas>
+<br/>
   <div>
     <button id="publishStream">开始推流</button>
   </div>
 
   <div>
     <button id="playStream">开始拉流</button>
-    <canvas id="remoteVideo" width="360px" height="240px"></canvas>
   </div>
   
   <div>
