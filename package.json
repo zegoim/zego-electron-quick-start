@@ -4,7 +4,7 @@
   "description": "A zego electron sdk quick start application",
   "main": "main.js",
   "scripts": {
-    "postinstall": "node node_modules/zegodown/bin/zegodown -v 5.0.9-test-0218-1716",
+    "postinstall": "node node_modules/zegodown/bin/zegodown -v 5.0.9-2021-02",
     "start": "electron .",
     "pkg": "node pkg.js"
   },
